@@ -28,7 +28,7 @@ EXCLUDED_DOMAINS = {
     "parcoursup.fr", "onisep.fr", "intercfa.fr",
     "linkedin.com", "facebook.com", "twitter.com",
     "instagram.com", "youtube.com", "tiktok.com",
-    "indeed.com", "jobteaser.com", "poleemploi.fr",
+    "indeed.com", "jobteaser.com", "francetravail.fr",
     "hellowork.com", "cadremploi.fr", "monster.fr",
     "alternance.emploi.gouv.fr", "francecompetences.fr",
     "orientation.fr", "studyrama.com",
@@ -36,6 +36,10 @@ EXCLUDED_DOMAINS = {
     "pages-jaunes.fr", "pagesjaunesentreprises.fr",
     "societe.com", "infogreffe.fr", "pappers.fr",
     "annuaire-mairie.fr", "kompass.com",
+    "opendatasoft.com", "data.opendatasoft.com",
+    "annuaire-cfa.fr", "lhc.re",
+    "etablissements-scolaires.fr", "fabert.com",
+    "education.gouv.fr",
 }
 
 
