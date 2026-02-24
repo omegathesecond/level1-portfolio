@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
 """
 Recherche le site web de chaque CFA sur DuckDuckGo par son nom + ville.
+Version parallèle avec ThreadPoolExecutor pour accélérer les recherches.
 Sauvegarde la progression dans cfa_website_cache.json.
-Met à jour Liste_CFA_Combinée.xlsx à la fin (et toutes les 100 CFAs).
 """
 
 import json
 import os
+import sys
 import time
 import random
-import re
+import threading
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from ddgs import DDGS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 EXCEL_IN  = os.path.join(BASE_DIR, "Liste_CFA_Combinée.xlsx")
 EXCEL_OUT = os.path.join(BASE_DIR, "Liste_CFA_Combinée.xlsx")
 CACHE_FILE = os.path.join(BASE_DIR, "cfa_website_cache.json")
+
+NUM_WORKERS = 5  # threads parallèles
 
 # Domaines à exclure des résultats de recherche
 EXCLUDED_DOMAINS = {
@@ -39,12 +43,15 @@ EXCLUDED_DOMAINS = {
     "opendatasoft.com", "data.opendatasoft.com",
     "annuaire-cfa.fr", "lhc.re",
     "etablissements-scolaires.fr", "fabert.com",
-    "education.gouv.fr",
+    "education.gouv.fr", "annuaire-ecoles.org",
 }
+
+# Verrou pour l'accès thread-safe au cache
+cache_lock = threading.Lock()
+progress_lock = threading.Lock()
 
 
 def is_excluded(url: str) -> bool:
-    """Vérifie si un URL provient d'un domaine à exclure."""
     if not url:
         return True
     for domain in EXCLUDED_DOMAINS:
@@ -65,16 +72,14 @@ def save_cache(cache: dict):
         json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
-def search_website(ddgs: DDGS, name: str, city: str, cp: str) -> str:
-    """
-    Cherche le site officiel d'un CFA via DuckDuckGo.
-    Retourne l'URL trouvée ou chaîne vide.
-    """
-    # Construction de la requête
+def search_one_cfa(name: str, city: str, cp: str) -> str:
+    """Cherche le site officiel d'un CFA via DuckDuckGo."""
     location = city or cp or ""
-    query = f'"{name}" {location} site officiel CFA'
+    ddgs = DDGS()
 
+    # Première tentative
     try:
+        query = f'"{name}" {location} site officiel CFA'
         results = ddgs.text(query, max_results=5, region="fr-fr")
         for r in results:
             url = r.get("href", "")
@@ -83,8 +88,9 @@ def search_website(ddgs: DDGS, name: str, city: str, cp: str) -> str:
     except Exception:
         pass
 
-    # Requête de secours sans guillemets
+    # Requête de secours
     try:
+        time.sleep(0.5)
         query2 = f"{name} {location} CFA apprentissage"
         results = ddgs.text(query2, max_results=5, region="fr-fr")
         for r in results:
@@ -97,29 +103,60 @@ def search_website(ddgs: DDGS, name: str, city: str, cp: str) -> str:
     return ""
 
 
-def load_excel_rows() -> tuple:
-    """
-    Charge les lignes de l'Excel existant.
-    Retourne (wb, ws, columns, rows_data)
-    """
+def process_cfa(item, cache, counters):
+    """Traite un seul CFA : recherche + mise à jour du cache."""
+    idx, name, city, cp = item
+    cache_key = f"{name}|{cp}"
+
+    # Vérifier le cache
+    with cache_lock:
+        if cache_key in cache:
+            url = cache[cache_key]
+            # Re-filtrer avec les nouvelles exclusions
+            if is_excluded(url):
+                url = ""
+            else:
+                with progress_lock:
+                    counters["skipped"] += 1
+                return cache_key, url
+
+    # Délai aléatoire court pour éviter le rate limiting
+    time.sleep(random.uniform(0.3, 1.0))
+
+    url = search_one_cfa(name, city, cp)
+
+    with cache_lock:
+        cache[cache_key] = url
+
+    with progress_lock:
+        counters["done"] += 1
+        if url:
+            counters["found"] += 1
+        total_done = counters["done"] + counters["skipped"]
+        if counters["done"] % 20 == 0:
+            pct = total_done * 100 // counters["total"]
+            print(f"  [{total_done}/{counters['total']}] {pct}% — "
+                  f"{counters['found']} nouveaux sites trouvés "
+                  f"(+{counters['skipped']} en cache)", flush=True)
+            save_cache(cache)
+
+    return cache_key, url
+
+
+def load_excel_rows():
     wb = openpyxl.load_workbook(EXCEL_IN)
     ws = wb.active
-
-    # Lire les colonnes depuis la 1ère ligne
     columns = [ws.cell(1, c).value for c in range(1, ws.max_column + 1)]
-
     rows = []
     for r in range(2, ws.max_row + 1):
         row = {}
         for c, col_name in enumerate(columns, start=1):
             row[col_name] = ws.cell(r, c).value or ""
         rows.append(row)
+    return columns, rows
 
-    return wb, ws, columns, rows
 
-
-def update_excel(rows: list, columns: list):
-    """Réécrit le fichier Excel avec les données mises à jour."""
+def update_excel(rows, columns):
     HEADER_FILL = PatternFill(start_color="1F4E79", end_color="1F4E79", fill_type="solid")
     HEADER_FONT = Font(bold=True, color="FFFFFF", size=11)
     SOURCE_COLORS = {
@@ -157,77 +194,64 @@ def update_excel(rows: list, columns: list):
     for col_idx, col_name in enumerate(columns, start=1):
         ws.column_dimensions[get_column_letter(col_idx)].width = COL_WIDTHS.get(col_name, 20)
     ws.auto_filter.ref = ws.dimensions
-
     wb.save(EXCEL_OUT)
 
 
 def main():
-    print("Chargement de l'Excel existant…")
-    wb, ws, columns, rows = load_excel_rows()
+    print("Chargement de l'Excel…", flush=True)
+    columns, rows = load_excel_rows()
     total = len(rows)
 
-    # Charger le cache de progression
     cache = load_cache()
-    print(f"Cache existant : {len(cache)} entrées")
+    print(f"Cache existant : {len(cache)} entrées", flush=True)
 
-    # Compter les CFAs sans site web
-    without_web = [r for r in rows if not r.get("Site Web")]
-    print(f"CFAs sans site web : {len(without_web)} / {total}")
-
-    ddgs = DDGS()
-    found_count = 0
-    processed = 0
-
+    # Construire la liste des CFAs à traiter (sans site web)
+    to_process = []
     for i, row in enumerate(rows):
-        name = row.get("Nom du CFA", "")
-        city = row.get("Ville", "")
-        cp   = row.get("Code Postal", "")
+        if not row.get("Site Web"):
+            to_process.append((
+                i,
+                row.get("Nom du CFA", ""),
+                row.get("Ville", ""),
+                str(row.get("Code Postal", "")),
+            ))
 
-        # Déjà un site web → passer
-        if row.get("Site Web"):
-            continue
+    print(f"CFAs à traiter : {len(to_process)} / {total}", flush=True)
+    print(f"Threads parallèles : {NUM_WORKERS}", flush=True)
 
-        # Clé de cache
-        cache_key = f"{name}|{cp}"
+    counters = {"done": 0, "found": 0, "skipped": 0, "total": len(to_process)}
+    results_map = {}
 
-        if cache_key in cache:
-            url = cache[cache_key]
-        else:
-            # Attente aléatoire pour éviter le rate limiting (1.0–2.5s)
-            time.sleep(random.uniform(1.0, 2.5))
-            url = search_website(ddgs, name, city, cp)
-            cache[cache_key] = url
+    with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
+        futures = {
+            executor.submit(process_cfa, item, cache, counters): item
+            for item in to_process
+        }
+        for future in as_completed(futures):
+            try:
+                cache_key, url = future.result()
+                results_map[cache_key] = url
+            except Exception as e:
+                print(f"  Erreur: {e}", flush=True)
 
-            # Sauvegarder le cache toutes les 10 recherches
-            if processed % 10 == 0:
-                save_cache(cache)
-
-        if url:
-            row["Site Web"] = url
-            found_count += 1
-
-        processed += 1
-
-        # Affichage de progression
-        if processed % 50 == 0 or processed == 1:
-            pct = processed * 100 // len(without_web)
-            print(f"  [{processed}/{len(without_web)}] {pct}% — {found_count} sites trouvés")
-            # Sauvegarde intermédiaire de l'Excel toutes les 100 CFAs
-            if processed % 100 == 0:
-                save_cache(cache)
-                update_excel(rows, columns)
-                print(f"  → Excel sauvegardé ({found_count} sites web)")
+    # Appliquer les résultats aux lignes
+    for row in rows:
+        if not row.get("Site Web"):
+            cache_key = f"{row.get('Nom du CFA', '')}|{row.get('Code Postal', '')}"
+            url = results_map.get(cache_key, "") or cache.get(cache_key, "")
+            if url and not is_excluded(url):
+                row["Site Web"] = url
 
     # Sauvegarde finale
     save_cache(cache)
     update_excel(rows, columns)
 
-    with_web_total = sum(1 for r in rows if r.get("Site Web"))
-    print(f"\n{'='*55}")
-    print(f"  TERMINÉ")
-    print(f"  Sites web trouvés : {with_web_total} / {total} ({with_web_total*100//total}%)")
-    print(f"  Fichier mis à jour : {EXCEL_OUT}")
-    print(f"{'='*55}")
+    with_web = sum(1 for r in rows if r.get("Site Web"))
+    print(f"\n{'='*55}", flush=True)
+    print(f"  TERMINÉ", flush=True)
+    print(f"  Sites web trouvés : {with_web} / {total} ({with_web*100//total}%)", flush=True)
+    print(f"  Fichier mis à jour : {EXCEL_OUT}", flush=True)
+    print(f"{'='*55}", flush=True)
 
 
 if __name__ == "__main__":
