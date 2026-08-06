@@ -27,13 +27,13 @@
     "nav.about": "À propos",
     "nav.contact": "Contact",
 
-    "hero.eyebrow": "Société britannique de logiciels IA",
+    "hero.eyebrow": "Éditeur de logiciels IA au Royaume-Uni",
     "hero.title1": "Répondez à chaque client,",
     "hero.title2": "sans recruter.",
     "hero.sub":
-      "BONZINILABS LTD conçoit des agents IA sur mesure, des chatbots et des automatisations WhatsApp pour les PME d'Europe et d'Afrique qui veulent répondre plus vite sans agrandir leur équipe.",
+      "BONZINILABS LTD conçoit des agents IA sur mesure, des chatbots et des automatisations WhatsApp pour les PME d’Europe et d’Afrique qui veulent répondre plus vite sans agrandir leur équipe.",
     "cta.contact": "Demander une proposition",
-    "cta.services": "Voir ce que nous construisons",
+    "cta.services": "Voir ce que nous réalisons",
 
     "proof.1": "Société immatriculée au Royaume-Uni",
     "proof.2": "Prestations B2B uniquement",
@@ -41,13 +41,13 @@
     "proof.4": "Missions à distance",
 
     "services.label": "Services",
-    "services.title": "Ce que nous construisons pour nos clients",
+    "services.title": "Ce que nous concevons pour nos clients",
     "services.intro":
-      "Quatre offres, vendues au projet ou sous forme de forfait mensuel. Chacune part d'un processus que vous exécutez déjà et aboutit à un logiciel utilisé chaque jour par vos équipes.",
+      "Quatre offres, vendues au projet ou sous forme de forfait mensuel. Chacune part d’un processus que vous exécutez déjà et aboutit à un logiciel utilisé chaque jour par vos équipes.",
 
     "svc1.title": "Agents IA sur mesure",
     "svc1.body":
-      "Nous construisons un assistant qui lit vos documents, répond aux questions de vos équipes et met à jour vos outils, pour traiter les demandes courantes sans interrompre personne.",
+      "Nous concevons un assistant qui lit vos documents, répond aux questions de vos équipes et met à jour vos outils, pour traiter les demandes courantes sans interrompre personne.",
     "svc1.li1": "Entraîné sur vos propres documents",
     "svc1.li2": "Agit directement dans vos outils",
     "svc1.li3": "Passe le relais à un humain",
@@ -57,7 +57,7 @@
       "Un assistant de support et de vente sur votre site et vos messageries, qui répond aux questions courantes 24h/24 et transmet les vraies opportunités à votre équipe.",
     "svc2.li1": "Réponses issues de vos contenus",
     "svc2.li2": "Fonctionne en plusieurs langues",
-    "svc2.li3": "Se connecte à votre CRM",
+    "svc2.li3": "Se connecte à votre CRM ou service client",
 
     "svc3.title": "Automatisation WhatsApp Business",
     "svc3.body":
@@ -65,7 +65,7 @@
       ": suivi de commande, rappels de rendez-vous et relances de paiement envoyés automatiquement, sur le canal que vos clients ouvrent déjà.",
     "svc3.li1": "Configuration Cloud API et modèles",
     "svc3.li2": "Scénarios automatisés avec réponses IA",
-    "svc3.li3": "Boîte de réception partagée",
+    "svc3.li3": "Boîte de réception partagée pour votre équipe",
 
     "svc4.title": "Automatisation des processus",
     "svc4.body":
@@ -84,54 +84,57 @@
       "Nous développons par cycles courts et vous montrons une version fonctionnelle à chaque étape, afin que vous testiez le système sur vos données avant la mise en ligne.",
     "step3.title": "Lancement accompagné",
     "step3.body":
-      "Nous déployons le système, formons les personnes qui l'utilisent et restons disponibles ensuite" + NBSP +
+      "Nous déployons le système, formons les personnes qui l’utilisent et restons disponibles ensuite" + NBSP +
       ": supervision, évolutions et améliorations sont assurées par un forfait mensuel.",
 
     "pricing.label": "Modalités",
     "pricing.title": "Comment nous cadrons et facturons",
     "pricing.body":
-      "Chaque projet est chiffré individuellement. Après un échange de cadrage, nous remettons une proposition écrite avec un périmètre et un prix fermes, ou un forfait mensuel de support et d'évolutions" + NBSP +
-      "; les travaux démarrent dès l'acceptation de la proposition. Les factures sont émises par BONZINILABS LTD en GBP ou en EUR et réglées par virement bancaire ou par carte.",
+      "Chaque projet est chiffré individuellement. Après un échange de cadrage, nous remettons une proposition écrite avec un périmètre et un prix fermes, ou un forfait mensuel de support et d’évolutions" + NBSP +
+      "; les travaux démarrent dès l’acceptation de la proposition. Les factures sont émises par BONZINILABS LTD en GBP ou en EUR et réglées par virement bancaire ou par carte.",
     "pricing.note":
       "Nous vendons uniquement des prestations de services à des entreprises. Nous ne vendons ni produits physiques, ni téléchargements, ni abonnements grand public en libre-service.",
     "pricing.secure":
       "Les paiements par carte sont traités par notre prestataire de paiement. BONZINILABS LTD ne voit ni ne conserve vos coordonnées bancaires complètes.",
     "pricing.restrictions":
-      "Nous ne fournissons aucune prestation à des personnes ou entités visées par des sanctions du Royaume-Uni, de l'Union européenne, des États-Unis ou de l'ONU, et nous ne livrons pas nos logiciels dans les juridictions sous sanctions.",
+      "Nous ne fournissons aucune prestation à des personnes ou entités visées par des sanctions du Royaume-Uni, de l’Union européenne, des États-Unis ou de l’ONU, et nous ne livrons pas nos logiciels dans les juridictions sous sanctions.",
     "pricing.facts": "Conditions commerciales",
     "pricing.t1": "Ce que nous vendons",
     "pricing.v1":
-      "Prestations de développement logiciel et d'automatisation pour les entreprises",
+      "Prestations de développement logiciel et d’automatisation pour les entreprises",
     "pricing.t2": "Modèle tarifaire",
-    "pricing.v2": "Projets au forfait, ou forfait mensuel de support",
+    "pricing.v2": "Projets à prix ferme, ou forfait mensuel de support",
     "pricing.t3": "Devise",
+    "pricing.v3": "GBP (£) ou EUR (€)",
+    "aria.home": "BONZINILABS LTD — accueil",
+    "aria.nav": "Navigation principale",
     "pricing.t4": "Moyens de paiement",
     "pricing.v4": "Virement bancaire ou carte, sur facture",
     "pricing.t5": "Politiques",
     "pricing.v5a": "Remboursements et annulation",
-    "pricing.v5b": "Conditions",
+    "pricing.v5b": "Conditions générales",
     "pricing.v5c": "Confidentialité",
 
     "about.label": "À propos",
-    "about.title": "Une société technologique britannique dédiée à l'IA appliquée",
+    "about.title": "Une société technologique britannique dédiée à l’IA appliquée",
     "about.p1":
-      "BONZINILABS LTD est une société technologique immatriculée en Angleterre et au Pays de Galles, dont le siège social est établi à Londres. Nous sommes spécialisés dans l'intelligence artificielle appliquée et l'automatisation pour les entreprises" + NBSP +
+      "BONZINILABS LTD est une société technologique immatriculée en Angleterre et au Pays de Galles, dont le siège social est établi à Londres. Nous sommes spécialisés dans l’intelligence artificielle appliquée et l’automatisation pour les entreprises" + NBSP +
       ": agents IA sur mesure, chatbots orientés clients, intégrations de la plateforme WhatsApp Business et connexion des systèmes déjà utilisés au quotidien.",
     "about.p2":
-      "Nous travaillons avec des dirigeants et des responsables d'exploitation de PME" + NBSP +
+      "Nous travaillons avec des dirigeants et des responsables des opérations de PME" + NBSP +
       ": agences, marques e-commerce, prestataires de services et acteurs locaux, en Europe et en Afrique. Nos interlocuteurs sont rarement techniques" + NBSP +
-      "; nous expliquons donc en termes simples ce que fera le système, nous le formalisons par écrit et nous gardons le logiciel compréhensible pour ceux qui l'utilisent.",
+      "; nous expliquons donc en termes simples ce que fera le système, nous le formalisons par écrit et nous gardons le logiciel compréhensible pour ceux qui l’utilisent.",
     "about.p3":
       "Notre modèle commercial est simple" + NBSP +
-      ": nous vendons des prestations de services à des entreprises, et non des produits à des particuliers. Chaque mission prend la forme d'un projet au forfait, facturé sur la base d'une proposition écrite, ou d'un forfait mensuel de support et d'évolutions. Les prestations sont réalisées à distance, en anglais et en français, et facturées par BONZINILABS LTD.",
-    "about.facts": "Informations légales",
+      ": nous vendons des prestations de services à des entreprises, et non des produits à des particuliers. Chaque mission prend la forme d’un projet à prix ferme, facturé sur la base d’une proposition écrite, ou d’un forfait mensuel de support et d’évolutions. Les prestations sont réalisées à distance, en anglais et en français, et facturées par BONZINILABS LTD.",
+    "about.facts": "Informations sur la société",
     "about.legal": "Dénomination sociale",
     "about.reg": "Immatriculation",
-    "about.regval": "Enregistrée en Angleterre et au Pays de Galles",
+    "about.regval": "Immatriculée en Angleterre et au Pays de Galles",
     "about.office": "Siège social",
     "about.model": "Modèle économique",
     "about.modelval":
-      "Développement logiciel et services d'automatisation B2B, facturés au projet ou au mois",
+      "Développement logiciel et services d’automatisation B2B, facturés au projet ou au mois",
     "about.email": "E-mail",
 
     "contact.label": "Contact",
@@ -142,9 +145,9 @@
     "contact.emailTitle": "E-mail",
     "contact.addrTitle": "Siège social",
     "contact.hoursTitle": "Horaires",
-    "contact.hours": "Du lundi au vendredi, 9h00–18h00 (heure du Royaume-Uni)",
+    "contact.hours": "Du lundi au vendredi, de 9h00 à 18h00 (heure du Royaume-Uni)",
     "contact.replyTitle": "Délai de réponse",
-    "contact.reply": "Nous répondons à toute demande sous deux jours ouvrés.",
+    "contact.reply": "Nous répondons à toute demande commerciale sous deux jours ouvrés.",
 
     "form.name": "Votre nom",
     "form.email": "Adresse e-mail",
@@ -153,7 +156,7 @@
     "form.submit": "Envoyer le message",
     "form.note":
       "Ce formulaire ouvre votre application e-mail avec le message pré-rempli" + NBSP +
-      "; aucune donnée n'est envoyée ni conservée sur ce site. Vous pouvez aussi écrire directement à contact@bonzinilabs.com.",
+      "; aucune donnée n’est envoyée ni conservée sur ce site. Vous pouvez aussi écrire directement à contact@bonzinilabs.com.",
 
     "footer.summary":
       "BONZINILABS LTD conçoit des agents IA sur mesure, des chatbots, des intégrations WhatsApp Business et des automatisations de processus pour les entreprises, facturés au projet ou au mois.",
@@ -163,9 +166,8 @@
     "footer.refunds": "Remboursements et annulation",
     "footer.privacy": "Politique de confidentialité",
     "footer.legal":
-      "BONZINILABS LTD, société enregistrée en Angleterre et au Pays de Galles. Siège social" + NBSP +
-      ": 71-75 Shelton Street, Covent Garden, Londres, WC2H 9JQ, Royaume-Uni.",
-    "footer.top": "Retour en haut"
+      "BONZINILABS LTD, société immatriculée en Angleterre et au Pays de Galles. Siège social" + NBSP +
+      ": 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom."
   };
 
   /* Strings used only from script (never rendered in the HTML source). */
@@ -185,7 +187,7 @@
     },
     fr: {
       formError:
-        "Merci d'indiquer votre nom, une adresse e-mail valide et un court message.",
+        "Merci d’indiquer votre nom, une adresse e-mail valide et un court message.",
       formOpening: "Ouverture de votre application e-mail…",
       menuOpen: "Ouvrir le menu",
       menuClose: "Fermer le menu",
@@ -195,7 +197,8 @@
       fCompany: "Entreprise",
       title: "BONZINILABS LTD — Automatisation IA pour les entreprises",
       description:
-        "BONZINILABS LTD, société britannique d'automatisation IA (AI automation) : agents IA sur mesure, chatbots, WhatsApp Business, processus métier automatisés."
+        "BONZINILABS LTD, société britannique d’automatisation par l’IA" + NBSP +
+        ": agents IA sur mesure, chatbots, WhatsApp Business et automatisation des processus métier."
     }
   };
 
@@ -204,6 +207,9 @@
      ------------------------------------------------------------------------ */
 
   var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
+  var ariaNodes = Array.prototype.slice.call(
+    document.querySelectorAll("[data-i18n-aria]")
+  );
   var langButtons = Array.prototype.slice.call(
     document.querySelectorAll(".lang-switch button")
   );
@@ -215,6 +221,9 @@
   var EN = {};
   nodes.forEach(function (el) {
     EN[el.getAttribute("data-i18n")] = el.textContent.replace(/\s+/g, " ").trim();
+  });
+  ariaNodes.forEach(function (el) {
+    EN[el.getAttribute("data-i18n-aria")] = el.getAttribute("aria-label");
   });
 
   var lang = "en";
@@ -228,6 +237,11 @@
       if (typeof value === "string") el.textContent = value;
     });
 
+    ariaNodes.forEach(function (el) {
+      var value = dict[el.getAttribute("data-i18n-aria")];
+      if (typeof value === "string") el.setAttribute("aria-label", value);
+    });
+
     document.documentElement.lang = lang;
     document.title = UI[lang].title;
 
@@ -239,6 +253,8 @@
     if (ogDesc) ogDesc.setAttribute("content", UI[lang].description);
     var ogLocale = document.querySelector('meta[property="og:locale"]');
     if (ogLocale) ogLocale.setAttribute("content", lang === "fr" ? "fr_FR" : "en_GB");
+    var ogAlt = document.querySelector('meta[property="og:locale:alternate"]');
+    if (ogAlt) ogAlt.setAttribute("content", lang === "fr" ? "en_GB" : "fr_FR");
 
     langButtons.forEach(function (btn) {
       btn.setAttribute(

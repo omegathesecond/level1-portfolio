@@ -795,6 +795,14 @@ main > section[id] {
 /* Three points in two columns leave an orphan on the second row, which is the
    layout tell the design system warns about. One column, always. */
 
+/* French runs 15-20% longer than English and was stranding single words on a
+   last line; let the browser balance the rag instead of hand-tuning strings. */
+.card-list li,
+.data-list dd,
+.hero-proof li {
+  text-wrap: pretty;
+}
+
 .card-list li {
   position: relative;
   padding-inline-start: var(--s-5);
