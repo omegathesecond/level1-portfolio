@@ -1,119 +1,127 @@
-/* ============================================================
-   BONZINILABS LTD — site scripts
-   Mobile navigation, EN/FR translation, contact form (mailto).
-   No dependencies, no tracking, no backend.
-   ============================================================ */
+/* =============================================================================
+   BONZINILABS LTD — site behaviour
+   Mobile navigation · EN/FR switching · contact form · entrance motion.
+   No dependencies, no analytics, no network calls, no cookies.
+   The page is fully readable and usable with JavaScript disabled.
+   ============================================================================= */
 
 (function () {
   "use strict";
 
   var CONTACT_EMAIL = "contact@bonzinilabs.com";
+  var STORAGE_KEY = "bzl.lang";
+  var NBSP = " "; /* French typography: no-break space before : ; ! ? */
 
-  /* ---------- Current year in the footer ---------- */
-  var yearEl = document.getElementById("year");
-  if (yearEl) {
-    yearEl.textContent = String(new Date().getFullYear());
-  }
+  /* ---------------------------------------------------------------------------
+     1. FRENCH DICTIONARY
+     English lives in the HTML and is captured at load, so it is never duplicated
+     here and can never drift out of sync.
+     ------------------------------------------------------------------------ */
 
-  /* ---------- Mobile navigation ---------- */
-  var nav = document.getElementById("nav");
-  var navToggle = document.getElementById("navToggle");
-
-  function closeNav() {
-    if (!nav || !navToggle) return;
-    nav.classList.remove("is-open");
-    navToggle.setAttribute("aria-expanded", "false");
-  }
-
-  if (nav && navToggle) {
-    navToggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-
-    nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") closeNav();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeNav();
-    });
-  }
-
-  /* ---------- Translations (English is the source in the HTML) ---------- */
   var FR = {
     "skip": "Aller au contenu",
 
     "nav.services": "Services",
     "nav.process": "Notre méthode",
+    "nav.engagement": "Modalités",
     "nav.about": "À propos",
     "nav.contact": "Contact",
-    "cta.contact": "Nous contacter",
-    "cta.services": "Voir nos services",
 
-    "hero.eyebrow": "Société britannique spécialisée en IA",
-    "hero.title1": "Mettez l'IA au travail",
-    "hero.title2": "dans votre entreprise.",
+    "hero.eyebrow": "Société britannique de logiciels IA",
+    "hero.title1": "Répondez à chaque client,",
+    "hero.title2": "sans recruter.",
     "hero.sub":
-      "BONZINILABS conçoit des agents IA sur mesure, des chatbots intelligents et des systèmes d'automatisation qui répondent à vos clients, prennent en charge les tâches répétitives et relient les outils que vous utilisez déjà.",
-    "hero.badge1": "Agents IA sur mesure",
-    "hero.badge2": "API WhatsApp Business",
-    "hero.badge3": "Automatisation des processus",
-    "hero.badge4": "Exclusivement B2B",
+      "BONZINILABS LTD conçoit des agents IA sur mesure, des chatbots et des automatisations WhatsApp pour les PME d'Europe et d'Afrique qui veulent répondre plus vite sans agrandir leur équipe.",
+    "cta.contact": "Demander une proposition",
+    "cta.services": "Voir ce que nous construisons",
+
+    "proof.1": "Société immatriculée au Royaume-Uni",
+    "proof.2": "Prestations B2B uniquement",
+    "proof.3": "Anglais et français",
+    "proof.4": "Missions à distance",
 
     "services.label": "Services",
     "services.title": "Ce que nous construisons pour nos clients",
     "services.intro":
-      "Nous livrons des projets logiciels au forfait ou au mois. Chaque mission commence par un cadrage détaillé et se termine par un système que votre équipe maîtrise et exploite.",
+      "Quatre offres, vendues au projet ou sous forme de forfait mensuel. Chacune part d'un processus que vous exécutez déjà et aboutit à un logiciel utilisé chaque jour par vos équipes.",
 
     "svc1.title": "Agents IA sur mesure",
     "svc1.body":
-      "Des assistants autonomes entraînés sur vos données, votre ton et vos règles. Ils qualifient vos prospects, rédigent des réponses, résument vos documents et agissent dans vos outils — avec un contrôle humain là où c'est nécessaire.",
-    "svc1.li1": "Base de connaissances et questions-réponses sur documents",
-    "svc1.li2": "Accès aux outils et API pour des actions réelles",
-    "svc1.li3": "Garde-fous, journalisation et transfert à un humain",
+      "Nous construisons un assistant qui lit vos documents, répond aux questions de vos équipes et met à jour vos outils, pour traiter les demandes courantes sans interrompre personne.",
+    "svc1.li1": "Entraîné sur vos propres documents",
+    "svc1.li2": "Agit directement dans vos outils",
+    "svc1.li3": "Passe le relais à un humain",
 
     "svc2.title": "Chatbots intelligents",
     "svc2.body":
-      "Des assistants orientés client pour votre site web, votre boîte de support ou vos messageries. Ils répondent dans la langue de vos clients, 24h/24, et transmettent proprement à votre équipe lorsqu'un humain est nécessaire.",
-    "svc2.li1": "Widget de site web et support multicanal",
-    "svc2.li2": "Réponses multilingues issues de vos propres contenus",
-    "svc2.li3": "Intégration CRM et service client",
+      "Un assistant de support et de vente sur votre site et vos messageries, qui répond aux questions courantes 24h/24 et transmet les vraies opportunités à votre équipe.",
+    "svc2.li1": "Réponses issues de vos contenus",
+    "svc2.li2": "Fonctionne en plusieurs langues",
+    "svc2.li3": "Se connecte à votre CRM",
 
-    "svc3.title": "Automatisation WhatsApp Business API",
+    "svc3.title": "Automatisation WhatsApp Business",
     "svc3.body":
-      "Intégrations officielles de la plateforme WhatsApp Business : conversations automatisées, suivi de commandes, rappels de rendez-vous, notifications et relances de paiement — sur le canal que vos clients utilisent déjà.",
-    "svc3.li1": "Configuration Cloud API et modèles de messages",
+      "Mise en place de la plateforme officielle WhatsApp Business" + NBSP +
+      ": suivi de commande, rappels de rendez-vous et relances de paiement envoyés automatiquement, sur le canal que vos clients ouvrent déjà.",
+    "svc3.li1": "Configuration Cloud API et modèles",
     "svc3.li2": "Scénarios automatisés avec réponses IA",
-    "svc3.li3": "Boîte de réception partagée et statistiques",
+    "svc3.li3": "Boîte de réception partagée",
 
-    "svc4.title": "Automatisation des processus métier",
+    "svc4.title": "Automatisation des processus",
     "svc4.body":
-      "Nous supprimons les étapes manuelles entre vos systèmes : saisie de données, devis, facturation, reporting, onboarding. Intégrations sur mesure entre votre CRM, vos tableurs, vos e-mails, vos paiements et vos outils internes.",
-    "svc4.li1": "Conception et développement des flux automatisés",
-    "svc4.li2": "Intégrations d'API et flux de données",
-    "svc4.li3": "Supervision, maintenance et support",
+      "Nous relions les systèmes entre lesquels vos équipes ressaisissent des données — commandes, devis, factures, tableurs, CRM — pour que le relais se fasse seul, sans attendre dans une boîte de réception.",
+    "svc4.li1": "Cartographie de votre processus actuel",
+    "svc4.li2": "Développement des intégrations entre outils",
+    "svc4.li3": "Supervision et corrections après lancement",
 
     "process.label": "Notre méthode",
     "process.title": "Du premier échange au système en production",
-    "step1.title": "Cadrage",
+    "step1.title": "Cadrage chiffré",
     "step1.body":
-      "Nous analysons le processus à automatiser, les outils concernés et le résultat attendu. Vous recevez un périmètre écrit, un prix fixe et un calendrier.",
-    "step2.title": "Développement",
+      "Nous analysons le processus, les outils et les volumes concernés, puis nous envoyons une proposition écrite avec un périmètre défini, un prix ferme et une date de livraison.",
+    "step2.title": "Développement itératif",
     "step2.body":
-      "Nous développons et testons la solution par cycles courts, avec une démonstration fonctionnelle à chaque étape. Aucune boîte noire.",
-    "step3.title": "Mise en ligne et support",
+      "Nous développons par cycles courts et vous montrons une version fonctionnelle à chaque étape, afin que vous testiez le système sur vos données avant la mise en ligne.",
+    "step3.title": "Lancement accompagné",
     "step3.body":
-      "Nous déployons, formons votre équipe et supervisons le système. Le support et les améliorations continues sont disponibles en abonnement mensuel.",
+      "Nous déployons le système, formons les personnes qui l'utilisent et restons disponibles ensuite" + NBSP +
+      ": supervision, évolutions et améliorations sont assurées par un forfait mensuel.",
+
+    "pricing.label": "Modalités",
+    "pricing.title": "Comment nous cadrons et facturons",
+    "pricing.body":
+      "Chaque projet est chiffré individuellement. Après un échange de cadrage, nous remettons une proposition écrite avec un périmètre et un prix fermes, ou un forfait mensuel de support et d'évolutions" + NBSP +
+      "; les travaux démarrent dès l'acceptation de la proposition. Les factures sont émises par BONZINILABS LTD en GBP ou en EUR et réglées par virement bancaire ou par carte.",
+    "pricing.note":
+      "Nous vendons uniquement des prestations de services à des entreprises. Nous ne vendons ni produits physiques, ni téléchargements, ni abonnements grand public en libre-service.",
+    "pricing.secure":
+      "Les paiements par carte sont traités par notre prestataire de paiement. BONZINILABS LTD ne voit ni ne conserve vos coordonnées bancaires complètes.",
+    "pricing.facts": "Conditions commerciales",
+    "pricing.t1": "Ce que nous vendons",
+    "pricing.v1":
+      "Prestations de développement logiciel et d'automatisation pour les entreprises",
+    "pricing.t2": "Modèle tarifaire",
+    "pricing.v2": "Projets au forfait, ou forfait mensuel de support",
+    "pricing.t3": "Devise",
+    "pricing.t4": "Moyens de paiement",
+    "pricing.v4": "Virement bancaire ou carte, sur facture",
+    "pricing.t5": "Politiques",
+    "pricing.v5a": "Remboursements et annulation",
+    "pricing.v5b": "Conditions",
+    "pricing.v5c": "Confidentialité",
 
     "about.label": "À propos",
     "about.title": "Une société technologique britannique dédiée à l'IA appliquée",
     "about.p1":
-      "BONZINILABS LTD est une société de développement logiciel enregistrée en Angleterre et au Pays de Galles, basée à Londres. Nous concevons et développons des outils et des solutions d'automatisation basés sur l'intelligence artificielle pour d'autres entreprises.",
+      "BONZINILABS LTD est une société technologique immatriculée en Angleterre et au Pays de Galles, dont le siège social est établi à Londres. Nous sommes spécialisés dans l'intelligence artificielle appliquée et l'automatisation pour les entreprises" + NBSP +
+      ": agents IA sur mesure, chatbots orientés clients, intégrations de la plateforme WhatsApp Business et connexion des systèmes déjà utilisés au quotidien.",
     "about.p2":
-      "Nos clients sont des PME qui veulent servir leurs clients plus vite sans augmenter leurs effectifs : agences, marques e-commerce, prestataires de services et acteurs locaux. Nous travaillons à distance avec des clients en Europe et en Afrique, en anglais comme en français.",
+      "Nous travaillons avec des dirigeants et des responsables d'exploitation de PME" + NBSP +
+      ": agences, marques e-commerce, prestataires de services et acteurs locaux, en Europe et en Afrique. Nos interlocuteurs sont rarement techniques" + NBSP +
+      "; nous expliquons donc en termes simples ce que fera le système, nous le formalisons par écrit et nous gardons le logiciel compréhensible pour ceux qui l'utilisent.",
     "about.p3":
-      "Notre approche est délibérément pragmatique. Nous ne vendons pas de présentations stratégiques : nous livrons des logiciels qui fonctionnent, intégrés aux systèmes que vous utilisez déjà, et nous en restons responsables après la mise en ligne.",
+      "Notre modèle commercial est simple" + NBSP +
+      ": nous vendons des prestations de services à des entreprises, et non des produits à des particuliers. Chaque mission prend la forme d'un projet au forfait, facturé sur la base d'une proposition écrite, ou d'un forfait mensuel de support et d'évolutions. Les prestations sont réalisées à distance, en anglais et en français, et facturées par BONZINILABS LTD.",
     "about.facts": "Informations légales",
     "about.legal": "Dénomination sociale",
     "about.reg": "Immatriculation",
@@ -127,133 +135,253 @@
     "contact.label": "Contact",
     "contact.title": "Dites-nous ce que vous souhaitez automatiser",
     "contact.intro":
-      "Envoyez-nous une courte description de votre projet : nous répondons sous deux jours ouvrés.",
+      "Décrivez le processus ou les échanges que vous souhaitez automatiser" + NBSP +
+      ": nous vous répondons avec les prochaines étapes et, si utile, un échange de cadrage.",
     "contact.emailTitle": "E-mail",
     "contact.addrTitle": "Siège social",
     "contact.hoursTitle": "Horaires",
-    "contact.hours": "Du lundi au vendredi, 9h00 – 18h00 (heure du Royaume-Uni)",
+    "contact.hours": "Du lundi au vendredi, 9h00–18h00 (heure du Royaume-Uni)",
+    "contact.replyTitle": "Délai de réponse",
+    "contact.reply": "Nous répondons à toute demande sous deux jours ouvrés.",
 
     "form.name": "Votre nom",
     "form.email": "Adresse e-mail",
     "form.company": "Entreprise (facultatif)",
-    "form.message": "Comment pouvons-nous vous aider ?",
+    "form.message": "Que souhaitez-vous automatiser" + NBSP + "?",
     "form.submit": "Envoyer le message",
     "form.note":
-      "Ce formulaire ouvre votre application e-mail avec le message pré-rempli. Vous pouvez aussi écrire directement à contact@bonzinilabs.com.",
-    "form.error":
-      "Merci d'indiquer votre nom, une adresse e-mail valide et un message.",
+      "Ce formulaire ouvre votre application e-mail avec le message pré-rempli" + NBSP +
+      "; aucune donnée n'est envoyée ni conservée sur ce site. Vous pouvez aussi écrire directement à contact@bonzinilabs.com.",
 
-    "footer.tag": "L'IA au service des entreprises",
-    "footer.reg": "Enregistrée en Angleterre et au Pays de Galles",
+    "footer.summary":
+      "BONZINILABS LTD conçoit des agents IA sur mesure, des chatbots, des intégrations WhatsApp Business et des automatisations de processus pour les entreprises, facturés au projet ou au mois.",
+    "footer.company": "Société",
+    "footer.legalCol": "Informations légales",
+    "footer.terms": "Conditions générales",
+    "footer.refunds": "Remboursements et annulation",
+    "footer.privacy": "Politique de confidentialité",
+    "footer.legal":
+      "BONZINILABS LTD, société enregistrée en Angleterre et au Pays de Galles. Siège social" + NBSP +
+      ": 71-75 Shelton Street, Covent Garden, Londres, WC2H 9JQ, Royaume-Uni.",
     "footer.top": "Retour en haut"
   };
 
-  var translatable = Array.prototype.slice.call(
-    document.querySelectorAll("[data-i18n]")
-  );
-
-  // Keep the original English strings so switching back is lossless.
-  var EN = {};
-  translatable.forEach(function (el) {
-    EN[el.getAttribute("data-i18n")] = el.textContent;
-  });
-
-  var META = {
+  /* Strings used only from script (never rendered in the HTML source). */
+  var UI = {
     en: {
-      title:
-        "BONZINILABS LTD — AI Automation & Custom AI Agents for Business",
+      formError: "Please add your name, a valid email address and a short message.",
+      formOpening: "Opening your email application…",
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
+      subject: "Project enquiry",
+      fName: "Name",
+      fEmail: "Email",
+      fCompany: "Company",
+      title: "BONZINILABS LTD — AI Automation & AI Agents for Business",
       description:
-        "BONZINILABS LTD is a UK software company building AI automation for business: custom AI agents, intelligent chatbots, WhatsApp Business API integrations and business process automation."
+        "BONZINILABS LTD is a UK company delivering AI automation for business: custom AI agents, chatbots, WhatsApp Business integrations and process automation."
     },
     fr: {
-      title:
-        "BONZINILABS LTD — Automatisation IA et agents IA sur mesure pour entreprises",
+      formError:
+        "Merci d'indiquer votre nom, une adresse e-mail valide et un court message.",
+      formOpening: "Ouverture de votre application e-mail…",
+      menuOpen: "Ouvrir le menu",
+      menuClose: "Fermer le menu",
+      subject: "Demande de projet",
+      fName: "Nom",
+      fEmail: "E-mail",
+      fCompany: "Entreprise",
+      title: "BONZINILABS LTD — Automatisation IA pour les entreprises",
       description:
-        "BONZINILABS LTD est une société britannique de développement logiciel spécialisée en automatisation par l'IA : agents IA sur mesure, chatbots intelligents, intégrations de l'API WhatsApp Business et automatisation des processus métier."
+        "BONZINILABS LTD, société britannique d'automatisation IA (AI automation) : agents IA sur mesure, chatbots, WhatsApp Business, processus métier automatisés."
     }
   };
 
-  function applyLanguage(lang) {
+  /* ---------------------------------------------------------------------------
+     2. LANGUAGE
+     ------------------------------------------------------------------------ */
+
+  var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
+  var langButtons = Array.prototype.slice.call(
+    document.querySelectorAll(".lang-switch button")
+  );
+  var EN = {};
+  nodes.forEach(function (el) {
+    EN[el.getAttribute("data-i18n")] = el.textContent.replace(/\s+/g, " ").trim();
+  });
+
+  var lang = "en";
+
+  function applyLanguage(next) {
+    lang = next === "fr" ? "fr" : "en";
     var dict = lang === "fr" ? FR : EN;
 
-    translatable.forEach(function (el) {
-      var key = el.getAttribute("data-i18n");
-      var value = lang === "fr" ? dict[key] : EN[key];
+    nodes.forEach(function (el) {
+      var value = dict[el.getAttribute("data-i18n")];
       if (typeof value === "string") el.textContent = value;
     });
 
     document.documentElement.lang = lang;
-    document.title = META[lang].title;
+    document.title = UI[lang].title;
 
     var desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", META[lang].description);
+    if (desc) desc.setAttribute("content", UI[lang].description);
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", UI[lang].title);
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute("content", UI[lang].description);
 
-    document.querySelectorAll(".lang-switch button").forEach(function (btn) {
-      var active = btn.getAttribute("data-lang") === lang;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    langButtons.forEach(function (btn) {
+      btn.setAttribute(
+        "aria-pressed",
+        btn.getAttribute("data-lang") === lang ? "true" : "false"
+      );
     });
 
+    if (navToggle) {
+      navToggle.setAttribute(
+        "aria-label",
+        navToggle.getAttribute("aria-expanded") === "true"
+          ? UI[lang].menuClose
+          : UI[lang].menuOpen
+      );
+    }
+
     try {
-      localStorage.setItem("bzl-lang", lang);
-    } catch (e) {
-      /* storage unavailable — language simply resets on reload */
+      localStorage.setItem(STORAGE_KEY, lang);
+    } catch (err) {
+      /* private mode: the choice simply resets on reload */
     }
   }
 
-  document.querySelectorAll(".lang-switch button").forEach(function (btn) {
+  langButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
       applyLanguage(btn.getAttribute("data-lang"));
     });
   });
 
-  // Restore the saved choice, otherwise follow the browser language.
-  var saved = null;
-  try {
-    saved = localStorage.getItem("bzl-lang");
-  } catch (e) {
-    saved = null;
-  }
-  var initial =
-    saved ||
-    ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en");
-  if (initial === "fr") applyLanguage("fr");
+  /* ---------------------------------------------------------------------------
+     3. NAVIGATION
+     ------------------------------------------------------------------------ */
 
-  /* ---------- Contact form → pre-filled email ---------- */
+  var nav = document.getElementById("nav");
+  var navToggle = document.getElementById("navToggle");
+
+  function setNav(open) {
+    if (!nav || !navToggle) return;
+    nav.setAttribute("data-open", open ? "true" : "false");
+    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    navToggle.setAttribute(
+      "aria-label",
+      open ? UI[lang].menuClose : UI[lang].menuOpen
+    );
+  }
+
+  if (nav && navToggle) {
+    setNav(false);
+
+    navToggle.addEventListener("click", function () {
+      setNav(navToggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    nav.addEventListener("click", function (event) {
+      if (event.target.closest("a")) setNav(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") setNav(false);
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 899) setNav(false);
+    });
+  }
+
+  /* ---------------------------------------------------------------------------
+     4. CONTACT FORM — composes a pre-filled email. Nothing leaves the browser
+     until the visitor sends it from their own mail client.
+     ------------------------------------------------------------------------ */
+
   var form = document.getElementById("contactForm");
-  var formError = document.getElementById("formError");
+  var status = document.getElementById("formStatus");
+
+  function say(message, state) {
+    if (!status) return;
+    status.textContent = message;
+    status.setAttribute("data-state", state);
+    status.hidden = false;
+  }
 
   if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-      // form.elements avoids the HTMLFormElement.name / .method name clash
-      var f = form.elements;
-      var name = f.namedItem("name").value.trim();
-      var email = f.namedItem("email").value.trim();
-      var company = f.namedItem("company").value.trim();
-      var message = f.namedItem("message").value.trim();
-      var validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      var fields = form.elements;
+      var name = fields.namedItem("name").value.trim();
+      var email = fields.namedItem("email").value.trim();
+      var company = fields.namedItem("company").value.trim();
+      var message = fields.namedItem("message").value.trim();
+      var emailLooksValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 
-      if (!name || !validEmail || !message) {
-        if (formError) formError.hidden = false;
+      if (!name || !emailLooksValid || !message) {
+        say(UI[lang].formError, "error");
+        (!name
+          ? fields.namedItem("name")
+          : !emailLooksValid
+            ? fields.namedItem("email")
+            : fields.namedItem("message")
+        ).focus();
         return;
       }
-      if (formError) formError.hidden = true;
 
-      var isFr = document.documentElement.lang === "fr";
-      var subject = (isFr ? "Demande de projet — " : "Project enquiry — ") + name +
-        (company ? " (" + company + ")" : "");
+      var t = UI[lang];
+      var subject = t.subject + " — " + name + (company ? " (" + company + ")" : "");
       var body =
-        (isFr ? "Nom" : "Name") + ": " + name + "\n" +
-        (isFr ? "E-mail" : "Email") + ": " + email + "\n" +
-        (isFr ? "Entreprise" : "Company") + ": " + (company || "—") + "\n\n" +
+        t.fName + ": " + name + "\n" +
+        t.fEmail + ": " + email + "\n" +
+        t.fCompany + ": " + (company || "—") + "\n\n" +
         message + "\n";
 
+      say(t.formOpening, "ok");
       window.location.href =
         "mailto:" + CONTACT_EMAIL +
         "?subject=" + encodeURIComponent(subject) +
         "&body=" + encodeURIComponent(body);
     });
   }
+
+  /* ---------------------------------------------------------------------------
+     5. YEAR
+     ------------------------------------------------------------------------ */
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll("[data-year]"),
+    function (el) {
+      el.textContent = String(new Date().getFullYear());
+    }
+  );
+
+  /* ---------------------------------------------------------------------------
+     6. NO SCROLL-REVEAL, ON PURPOSE
+     An earlier build faded sections in on scroll. Visual QA caught the failure
+     mode: if the observer does not fire — a headless crawler, an archived copy,
+     a browser that renders before scripts settle — the page shows a hero and
+     nothing else. This site exists to be read by reviewers and crawlers, so
+     every word is in the document and visible from the first paint. The only
+     motion left is hover feedback, which cannot hide anything.
+     ------------------------------------------------------------------------ */
+
+  /* ---------------------------------------------------------------------------
+     7. RESTORE THE VISITOR'S LANGUAGE
+     ------------------------------------------------------------------------ */
+
+  var stored = null;
+  try {
+    stored = localStorage.getItem(STORAGE_KEY);
+  } catch (err) {
+    stored = null;
+  }
+
+  var browserLang = (navigator.language || "en").toLowerCase();
+  applyLanguage(stored || (browserLang.indexOf("fr") === 0 ? "fr" : "en"));
 })();
