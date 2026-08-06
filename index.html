@@ -34,8 +34,8 @@
   <link rel="preload" href="assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
 
-  <!-- Legal entity data. Keep this in exact agreement with the details filed at
-       Companies House and with the Stripe dashboard: legal name, address, email. -->
+  <!-- Legal entity data. Must stay in exact agreement with the details filed at
+       Companies House: legal name, registered office, contact address. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -201,8 +201,9 @@
               </svg>
             </span>
             <h3 data-i18n="svc3.title">WhatsApp Business automation</h3>
-            <p data-i18n="svc3.body">Official WhatsApp Business Platform setup: order updates, appointment reminders and
-              payment follow-ups sent automatically, on the channel your customers already open every day.</p>
+            <p data-i18n="svc3.body">We set up the WhatsApp Business Platform (Cloud API): order updates, appointment
+              reminders and payment follow-ups sent automatically, on the channel your customers already open every
+              day.</p>
             <ul class="card-list">
               <li data-i18n="svc3.li1">Cloud API setup and templates</li>
               <li data-i18n="svc3.li2">Automated flows with AI replies</li>
@@ -261,9 +262,9 @@
     </section>
 
     <!-- ========================= ENGAGEMENT & BILLING =========================
-         This section exists so that a reviewer — at Stripe or anywhere else —
-         can tell exactly what is sold, to whom, in which currency, and how it
-         is invoiced, without a public rate card. -->
+         Every engagement is priced individually, so there is no rate card. This
+         section states instead what is sold, to whom, in which currency and on
+         what terms, which is what a prospective client needs before enquiring. -->
     <section class="section" id="engagement">
       <div class="container">
         <div class="section-header">
@@ -281,6 +282,8 @@
               downloadable products or self-serve consumer subscriptions.</p>
             <p data-i18n="pricing.secure">Card payments are processed by our payment provider. BONZINILABS LTD never
               sees or stores your full card details.</p>
+            <p data-i18n="pricing.restrictions">We do not provide services to individuals or entities subject to UK, EU,
+              US or UN sanctions, and we do not supply our software to sanctioned jurisdictions.</p>
           </div>
 
           <aside class="panel">
@@ -350,9 +353,9 @@
               <div>
                 <dt data-i18n="about.reg">Registration</dt>
                 <dd data-i18n="about.regval">Registered in England &amp; Wales</dd>
-                <!-- Companies Act 2006 requires the registered number on the company website.
-                     Add it here once to hand, e.g.:
-                     <dd>Company no. 12345678</dd>  -->
+                <!-- Companies Act 2006 requires the registered number on a company website.
+                     Add it as a second <dd> here as soon as it is to hand, and in the
+                     footer of index.html, terms.html, privacy.html and refunds.html. -->
               </div>
               <div>
                 <dt data-i18n="about.office">Registered office</dt>

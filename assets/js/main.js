@@ -61,7 +61,7 @@
 
     "svc3.title": "Automatisation WhatsApp Business",
     "svc3.body":
-      "Mise en place de la plateforme officielle WhatsApp Business" + NBSP +
+      "Nous mettons en place la plateforme WhatsApp Business (Cloud API)" + NBSP +
       ": suivi de commande, rappels de rendez-vous et relances de paiement envoyés automatiquement, sur le canal que vos clients ouvrent déjà.",
     "svc3.li1": "Configuration Cloud API et modèles",
     "svc3.li2": "Scénarios automatisés avec réponses IA",
@@ -96,6 +96,8 @@
       "Nous vendons uniquement des prestations de services à des entreprises. Nous ne vendons ni produits physiques, ni téléchargements, ni abonnements grand public en libre-service.",
     "pricing.secure":
       "Les paiements par carte sont traités par notre prestataire de paiement. BONZINILABS LTD ne voit ni ne conserve vos coordonnées bancaires complètes.",
+    "pricing.restrictions":
+      "Nous ne fournissons aucune prestation à des personnes ou entités visées par des sanctions du Royaume-Uni, de l'Union européenne, des États-Unis ou de l'ONU, et nous ne livrons pas nos logiciels dans les juridictions sous sanctions.",
     "pricing.facts": "Conditions commerciales",
     "pricing.t1": "Ce que nous vendons",
     "pricing.v1":
@@ -205,6 +207,11 @@
   var langButtons = Array.prototype.slice.call(
     document.querySelectorAll(".lang-switch button")
   );
+
+  /* Only the home page is translated. The legal pages are English — English is
+     the governing language of the company's contracts — so they carry no
+     switch, and nothing here may touch their title or meta description. */
+  var translatable = langButtons.length > 0;
   var EN = {};
   nodes.forEach(function (el) {
     EN[el.getAttribute("data-i18n")] = el.textContent.replace(/\s+/g, " ").trim();
@@ -230,6 +237,8 @@
     if (ogTitle) ogTitle.setAttribute("content", UI[lang].title);
     var ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute("content", UI[lang].description);
+    var ogLocale = document.querySelector('meta[property="og:locale"]');
+    if (ogLocale) ogLocale.setAttribute("content", lang === "fr" ? "fr_FR" : "en_GB");
 
     langButtons.forEach(function (btn) {
       btn.setAttribute(
@@ -375,13 +384,15 @@
      7. RESTORE THE VISITOR'S LANGUAGE
      ------------------------------------------------------------------------ */
 
-  var stored = null;
-  try {
-    stored = localStorage.getItem(STORAGE_KEY);
-  } catch (err) {
-    stored = null;
-  }
+  if (translatable) {
+    var stored = null;
+    try {
+      stored = localStorage.getItem(STORAGE_KEY);
+    } catch (err) {
+      stored = null;
+    }
 
-  var browserLang = (navigator.language || "en").toLowerCase();
-  applyLanguage(stored || (browserLang.indexOf("fr") === 0 ? "fr" : "en"));
+    var browserLang = (navigator.language || "en").toLowerCase();
+    applyLanguage(stored || (browserLang.indexOf("fr") === 0 ? "fr" : "en"));
+  }
 })();
