@@ -59,10 +59,10 @@ navigateur suffit ; pour un aperçu propre : `npx http-server -p 8123 .`
   le focus, le menu mobile rend le focus au bouton quand il se ferme, et une
   erreur de formulaire est reliée au champ concerné par `aria-invalid` et
   `aria-describedby`. Rien n'est coupé jusqu'à 320 px (zoom 400 %).
-- **Design system strict.** Grille d'espacement de 8 px, sept rôles typographiques fluides en
-  `clamp()`, cinq rayons autorisés, quatre points de rupture (640/768/1024/1280). Les contrastes
-  ont été calculés : 18,3:1 pour les titres, 8,5:1 pour le texte courant, 6,5:1 pour l'accent —
-  au-dessus du seuil AA de 4,5:1.
+- **Design system strict.** Grille d'espacement de 8 px, huit rôles typographiques fluides en
+  `clamp()`, cinq rayons autorisés, points de rupture à 480/640/768/900/1024. Aucune valeur
+  hors de ces échelles, à l'exception documentée des cotes imposées par ailleurs (cible
+  tactile de 44 px, barre de 56/64 px).
 
 ## Régénérer les images
 
@@ -87,10 +87,12 @@ et de la [checklist de la documentation](https://docs.stripe.com/get-started/che
   et le pied de page de chaque page ;
 - description explicite des prestations vendues et de la clientèle visée (entreprises) ;
 - e-mail en clair, adresse postale complète, horaires et délai de réponse ;
-- modèle commercial et **devise en toutes lettres** (GBP (£) & EUR (€)) ;
+- modèle commercial et **devise en toutes lettres** (GBP (£) ou EUR (€)) ;
 - politiques de remboursement, d'annulation, de livraison et de confidentialité, plus les
   conditions générales, liées depuis la page d'accueil ;
-- `robots.txt` ouvert, aucune balise `noindex`, données structurées `ProfessionalService`.
+- `robots.txt` ouvert, aucune balise `noindex`, données structurées `Organization` ;
+- en-têtes HSTS et CSP, et les fichiers de développement (`README`, `DEPLOY`, `tools/`) ne
+  sont pas servis sur le domaine public.
 
 **À compléter par le dirigeant** (jamais inventé dans le code) : le numéro d'immatriculation
 de la société, un numéro de téléphone, le numéro de TVA le cas échéant, et une boîte mail
