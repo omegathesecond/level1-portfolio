@@ -1,6 +1,6 @@
 /* =============================================================================
    BONZINILABS LTD — site behaviour
-   Mobile navigation · EN/FR switching · contact form · entrance motion.
+   Mobile navigation · EN/FR switching · contact form · current year.
    No dependencies, no analytics, no network calls, no cookies.
    The page is fully readable and usable with JavaScript disabled.
    ============================================================================= */
@@ -108,6 +108,8 @@
     "pricing.v3": "GBP (£) ou EUR (€)",
     "aria.home": "BONZINILABS LTD — accueil",
     "aria.nav": "Navigation principale",
+    "aria.footerCompany": "Société",
+    "aria.footerLegal": "Informations légales",
     "pricing.t4": "Moyens de paiement",
     "pricing.v4": "Virement bancaire ou carte, sur facture",
     "pricing.t5": "Politiques",
@@ -210,6 +212,14 @@
   var ariaNodes = Array.prototype.slice.call(
     document.querySelectorAll("[data-i18n-aria]")
   );
+  var nav = document.getElementById("nav");
+  var navToggle = document.getElementById("navToggle");
+  var form = document.getElementById("contactForm");
+  var status = document.getElementById("formStatus");
+
+  /* One source of truth for the point the navigation collapses; the same
+     value lives in the stylesheet's max-width: 899px query. */
+  var compact = window.matchMedia("(max-width: 899px)");
   var langButtons = Array.prototype.slice.call(
     document.querySelectorAll(".lang-switch button")
   );
@@ -274,7 +284,7 @@
 
     try {
       localStorage.setItem(STORAGE_KEY, lang);
-    } catch (err) {
+    } catch {
       /* private mode: the choice simply resets on reload */
     }
   }
@@ -289,17 +299,26 @@
      3. NAVIGATION
      ------------------------------------------------------------------------ */
 
-  var nav = document.getElementById("nav");
-  var navToggle = document.getElementById("navToggle");
-
-  function setNav(open) {
+  function setNav(open, restoreFocus) {
     if (!nav || !navToggle) return;
+    var hadFocus = nav.contains(document.activeElement);
+
     nav.setAttribute("data-open", open ? "true" : "false");
     navToggle.setAttribute("aria-expanded", open ? "true" : "false");
     navToggle.setAttribute(
       "aria-label",
       open ? UI[lang].menuClose : UI[lang].menuOpen
     );
+
+    /* The sheet is display:none when closed, so anything focused inside it
+       would otherwise be blurred and the tab sequence would restart at the
+       top of the document. */
+    if (open) {
+      var first = nav.querySelector("a");
+      if (first) first.focus();
+    } else if (hadFocus && restoreFocus !== false) {
+      navToggle.focus();
+    }
   }
 
   if (nav && navToggle) {
@@ -310,16 +329,27 @@
     });
 
     nav.addEventListener("click", function (event) {
-      if (event.target.closest("a")) setNav(false);
+      var link = event.target.closest("a");
+      if (!link) return;
+      setNav(false, false);
+
+      var target = document.querySelector(link.getAttribute("href"));
+      if (target) {
+        target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      }
     });
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") setNav(false);
     });
 
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 899) setNav(false);
-    });
+    /* Leaving the compact range with the sheet open would strand it. */
+    if (compact.addEventListener) {
+      compact.addEventListener("change", function (event) {
+        if (!event.matches) setNav(false);
+      });
+    }
   }
 
   /* ---------------------------------------------------------------------------
@@ -327,35 +357,51 @@
      until the visitor sends it from their own mail client.
      ------------------------------------------------------------------------ */
 
-  var form = document.getElementById("contactForm");
-  var status = document.getElementById("formStatus");
-
   function say(message, state) {
     if (!status) return;
-    status.textContent = message;
+    status.hidden = false; /* re-enter the accessibility tree first */
     status.setAttribute("data-state", state);
-    status.hidden = false;
+    status.textContent = "";
+    window.requestAnimationFrame(function () {
+      status.textContent = message;
+    });
   }
 
   if (form) {
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
+      // form.elements avoids the HTMLFormElement.name / .method name clash,
+      // and the guard keeps a renamed field from dead-ending the whole form.
+      function value(fieldName) {
+        var field = form.elements.namedItem(fieldName);
+        return field ? field.value.trim() : "";
+      }
+
       var fields = form.elements;
-      var name = fields.namedItem("name").value.trim();
-      var email = fields.namedItem("email").value.trim();
-      var company = fields.namedItem("company").value.trim();
-      var message = fields.namedItem("message").value.trim();
+      var name = value("name");
+      var email = value("email");
+      var company = value("company");
+      var message = value("message");
       var emailLooksValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 
+      ["name", "email", "message"].forEach(function (fieldName) {
+        var field = fields.namedItem(fieldName);
+        if (!field) return;
+        field.removeAttribute("aria-invalid");
+        field.removeAttribute("aria-describedby");
+      });
+
       if (!name || !emailLooksValid || !message) {
+        var invalid = fields.namedItem(
+          !name ? "name" : !emailLooksValid ? "email" : "message"
+        );
+        if (invalid) {
+          invalid.setAttribute("aria-invalid", "true");
+          invalid.setAttribute("aria-describedby", "formStatus");
+        }
         say(UI[lang].formError, "error");
-        (!name
-          ? fields.namedItem("name")
-          : !emailLooksValid
-            ? fields.namedItem("email")
-            : fields.namedItem("message")
-        ).focus();
+        if (invalid) invalid.focus();
         return;
       }
 
@@ -401,10 +447,10 @@
      ------------------------------------------------------------------------ */
 
   if (translatable) {
-    var stored = null;
+    var stored;
     try {
       stored = localStorage.getItem(STORAGE_KEY);
-    } catch (err) {
+    } catch {
       stored = null;
     }
 

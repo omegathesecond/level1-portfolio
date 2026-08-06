@@ -18,7 +18,7 @@
     <div class="container header-inner">
       <a class="brand" href="/" aria-label="BONZINILABS LTD — home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-          stroke-linejoin="round" aria-hidden="true">
+          stroke-linejoin="round" aria-hidden="true" focusable="false">
           <path d="M4 3H13L16 6V9L13 12H17L20 15V18L17 21H4Z" />
           <path d="M4 12H13" />
           <circle cx="9.5" cy="7.5" r="1.25" fill="currentColor" stroke="none" />
@@ -29,7 +29,7 @@
     </div>
   </header>
 
-  <main id="main" class="doc">
+  <main id="main" class="doc" tabindex="-1">
     <div class="container">
       <div class="doc-header">
         <span class="section-label">Error 404</span>
@@ -64,7 +64,9 @@
     </div>
   </footer>
 
-  <script src="/assets/js/main.js" defer></script>
+  <script>document.querySelectorAll("[data-year]").forEach(function (el) {
+    el.textContent = String(new Date().getFullYear());
+  });</script>
 </body>
 
 </html>

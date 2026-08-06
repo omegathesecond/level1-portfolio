@@ -48,14 +48,14 @@ const mark = `
 const ogHtml = `<!doctype html><meta charset="utf-8"><style>
 ${fontFace}
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1200px;height:630px;background:#07090D;font-family:Inter,sans-serif;
+body{width:1200px;height:630px;background:#08090A;font-family:Inter,sans-serif;
   position:relative;overflow:hidden;-webkit-font-smoothing:antialiased}
 .glow-a{position:absolute;inset:0;background:radial-gradient(660px 660px at 210px 150px,
-  rgba(77,157,255,.20),rgba(77,157,255,.05) 50%,transparent 70%)}
+  rgba(110,139,255,.20),rgba(110,139,255,.05) 50%,transparent 70%)}
 .glow-b{position:absolute;inset:0;background:radial-gradient(520px 520px at 1080px 610px,
   rgba(23,224,196,.14),rgba(23,224,196,.04) 50%,transparent 70%)}
 .rule{position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,rgba(77,157,255,0) 0%,rgba(77,157,255,.85) 34%,
+  background:linear-gradient(90deg,rgba(110,139,255,0) 0%,rgba(110,139,255,.85) 34%,
   rgba(23,224,196,.85) 66%,rgba(23,224,196,0) 100%)}
 .inner{position:absolute;left:96px;top:140px;right:96px}
 svg{width:96px;height:96px;display:block}
@@ -70,7 +70,7 @@ p{margin-top:22px;font-size:30px;font-weight:400;color:#96A5B8;letter-spacing:-.
   <svg viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="1.5"
        stroke-linecap="round" stroke-linejoin="round">
     <defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#4D9DFF"/><stop offset="1" stop-color="#17E0C4"/>
+      <stop offset="0" stop-color="#6E8BFF"/><stop offset="1" stop-color="#17E0C4"/>
     </linearGradient></defs>${mark}
   </svg>
   <h1>BONZINILABS<span>LTD</span></h1>
@@ -79,23 +79,23 @@ p{margin-top:22px;font-size:30px;font-weight:400;color:#96A5B8;letter-spacing:-.
   <div class="meta">CUSTOM AI AGENTS &middot; CHATBOTS &middot; WHATSAPP BUSINESS API &middot; PROCESS AUTOMATION</div>
 </div>`;
 
-/* --- icon tile ------------------------------------------------------------ */
-const iconHtml = (size) => `<!doctype html><meta charset="utf-8"><style>
+/* --- icon tile ------------------------------------------------------------
+   The favicon keeps its rounded corners and transparency so it sits cleanly on
+   a dark tab strip. The Apple touch icon must NOT: iOS applies its own mask and
+   composites transparency to black, so that one is a full-bleed square.     -- */
+const iconHtml = (size, { rounded = true } = {}) => `<!doctype html><meta charset="utf-8"><style>
 *{margin:0;padding:0}html,body{width:${size}px;height:${size}px;background:transparent}
 svg{display:block;width:${size}px;height:${size}px}</style>
 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <rect width="32" height="32" rx="7" fill="#07090D"/>
-  <path d="M8 7H19L22 10V12L19 15H8Z" fill="#4D9DFF"/>
-  <path d="M8 17H21L24 20V22L21 25H8Z" fill="#4D9DFF"/>
+  <rect width="32" height="32" rx="${rounded ? 7 : 0}" fill="#08090A"/>
+  <path d="M8 7H19L22 10V12L19 15H8Z" fill="#6E8BFF"/>
+  <path d="M8 17H21L24 20V22L21 25H8Z" fill="#6E8BFF"/>
 </svg>`;
 
 const browser = await chromium.launch();
 
-async function shot(html, width, height, out, scale = 1) {
-  const page = await browser.newPage({
-    viewport: { width, height },
-    deviceScaleFactor: scale,
-  });
+async function shot(html, width, height, out) {
+  const page = await browser.newPage({ viewport: { width, height } });
   await page.setContent(html, { waitUntil: 'load' });
   await page.evaluate(async () => {
     await Promise.all([
@@ -105,14 +105,14 @@ async function shot(html, width, height, out, scale = 1) {
     ]);
     await document.fonts.ready;
   });
-  const buffer = await page.screenshot({ type: 'png' });
+  const buffer = await page.screenshot({ type: 'png', omitBackground: true });
   if (out) writeFileSync(join(root, out), buffer);
   await page.close();
   return buffer;
 }
 
 await shot(ogHtml, 1200, 630, 'assets/img/og-image.png');
-await shot(iconHtml(180), 180, 180, 'assets/img/apple-touch-icon.png');
+await shot(iconHtml(180, { rounded: false }), 180, 180, 'assets/img/apple-touch-icon.png');
 const png32 = await shot(iconHtml(32), 32, 32, null);
 const png16 = await shot(iconHtml(16), 16, 16, null);
 await browser.close();

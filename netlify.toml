@@ -14,7 +14,12 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    # The site loads nothing from anywhere else. 'unsafe-inline' covers exactly
+    # two inline blocks — the JSON-LD entity data and the footer year — and the
+    # page renders no user input, so there is nothing for it to smuggle.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
 
 # Fonts and images never change without changing name; the stylesheet and the
 # script do, and their filenames are not content-hashed, so an immutable cache

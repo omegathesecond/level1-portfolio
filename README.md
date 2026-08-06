@@ -19,12 +19,13 @@ index.html            page unique : hero, services, méthode, modalités, à pro
 terms.html            conditions générales
 refunds.html          remboursements, annulation et livraison
 privacy.html          politique de confidentialité (RGPD-UK)
+404.html              page d'erreur (liée aux vraies pages, pas la page par défaut de l'hébergeur)
 assets/css/style.css  feuille de style unique
 assets/js/main.js     menu mobile, bascule EN/FR, formulaire, année
 assets/fonts/         Inter Variable, sous-ensemble latin, auto-hébergé (48 Ko)
 assets/img/           marque, favicon, image de partage
 tools/build-images.mjs génère og-image.png, apple-touch-icon.png et favicon.ico
-robots.txt sitemap.xml netlify.toml vercel.json favicon.ico
+robots.txt sitemap.xml netlify.toml vercel.json .vercelignore favicon.ico
 ```
 
 Aucune dépendance, aucun build, aucune requête vers un tiers. Ouvrir `index.html` dans un
@@ -51,6 +52,13 @@ navigateur suffit ; pour un aperçu propre : `npx http-server -p 8123 .`
 - **Formulaire sans serveur.** Il compose un e-mail pré-rempli dans l'application du visiteur.
   Rien n'est envoyé ni stocké. L'adresse e-mail est **aussi affichée en clair** : Stripe
   demande explicitement un moyen de contact autre qu'un formulaire.
+- **Accessibilité vérifiée au test, pas à l'œil.** Chaque contraste a été mesuré
+  sur le rendu réel : 18,3:1 pour les titres, 8,5:1 pour le texte, 5,9:1 au plus
+  bas, et 3,1:1 minimum pour la bordure des champs — seul élément qui signale un
+  contrôle, donc soumise au seuil de 3:1. Le lien d'évitement déplace réellement
+  le focus, le menu mobile rend le focus au bouton quand il se ferme, et une
+  erreur de formulaire est reliée au champ concerné par `aria-invalid` et
+  `aria-describedby`. Rien n'est coupé jusqu'à 320 px (zoom 400 %).
 - **Design system strict.** Grille d'espacement de 8 px, sept rôles typographiques fluides en
   `clamp()`, cinq rayons autorisés, quatre points de rupture (640/768/1024/1280). Les contrastes
   ont été calculés : 18,3:1 pour les titres, 8,5:1 pour le texte courant, 6,5:1 pour l'accent —
