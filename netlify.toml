@@ -1,0 +1,27 @@
+# BONZINILABS LTD — Netlify configuration
+# Static site, no build step: the repository root is published as-is.
+
+[build]
+  publish = "."
+  command = ""
+
+# The site must stay publicly reachable — no password, no basic auth, no
+# "coming soon" gate. Stripe's reviewers have to open it directly.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

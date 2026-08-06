@@ -1,87 +1,377 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Style Conferences</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <title>BONZINILABS LTD — AI Automation &amp; Custom AI Agents for Business</title>
+  <meta name="description"
+    content="BONZINILABS LTD is a UK software company building AI automation for business: custom AI agents, intelligent chatbots, WhatsApp Business API integrations and business process automation.">
+  <meta name="keywords"
+    content="BONZINILABS, BONZINILABS LTD, AI automation, custom AI agents, AI chatbots, WhatsApp Business API, business process automation, London">
+  <meta name="author" content="BONZINILABS LTD">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bonzinilabs.com/">
 
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BONZINILABS LTD">
+  <meta property="og:title" content="BONZINILABS LTD — AI Automation &amp; Custom AI Agents for Business">
+  <meta property="og:description"
+    content="UK software company building AI automation for business: custom AI agents, intelligent chatbots, WhatsApp Business API integrations and process automation.">
+  <meta property="og:url" content="https://bonzinilabs.com/">
+  <meta property="og:image" content="https://bonzinilabs.com/assets/img/og-image.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BONZINILABS LTD — AI Automation for Business">
+  <meta name="twitter:description"
+    content="Custom AI agents, intelligent chatbots, WhatsApp Business API integrations and business process automation.">
+  <meta name="twitter:image" content="https://bonzinilabs.com/assets/img/og-image.svg">
 
+  <meta name="theme-color" content="#070A0F">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Structured data: helps Stripe / search engines identify the legal entity -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BONZINILABS LTD",
+    "legalName": "BONZINILABS LTD",
+    "alternateName": "BONZINILABS",
+    "url": "https://bonzinilabs.com/",
+    "email": "contact@bonzinilabs.com",
+    "description": "BONZINILABS LTD builds AI automation software for businesses: custom AI agents, intelligent chatbots, WhatsApp Business API integrations and business process automation.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "71-75 Shelton Street, Covent Garden",
+      "addressLocality": "London",
+      "postalCode": "WC2H 9JQ",
+      "addressCountry": "GB"
+    },
+    "areaServed": "Worldwide",
+    "knowsAbout": ["AI agents", "Chatbots", "WhatsApp Business API", "Business process automation"]
+  }
+  </script>
 </head>
 
-<header>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="contact.html">Contact</a></li>
-    </ul>
-</header>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
 
-    <div id="first_section">
-        <h1>MR. LASLIE </h1>
-        <p>See My pictures <a href="gallery.html">here</a></p>
-        <h3>A Brief History of me</h3>
-        <p>My name is <em>LASLIE</em>, I was born in Cameroon. I am trying to be a programmer, hope that works out for me</p>
-        <h3>Education so far</h3>
-        <p>
-            <ul>
-                <li><strong>GHS LImbe</strong></li>
-                <li>Kulu Limbe</li>
-            </ul>
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="BONZINILABS LTD — home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">BONZINILABS<span class="brand-suffix">&nbsp;LTD</span></span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Main navigation">
+        <a href="#services" data-i18n="nav.services">Services</a>
+        <a href="#process" data-i18n="nav.process">How we work</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
+        <a class="btn btn-primary btn-sm nav-cta" href="#contact" data-i18n="cta.contact">Contact us</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" class="is-active" aria-pressed="true">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="nav"
+          aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span data-i18n="hero.eyebrow">UK-registered AI
+            software company</span></p>
+        <h1 class="hero-title">
+          <span data-i18n="hero.title1">Put AI to work</span><br>
+          <span class="accent" data-i18n="hero.title2">inside your business.</span>
+        </h1>
+        <p class="hero-sub" data-i18n="hero.sub">
+          BONZINILABS builds custom AI agents, intelligent chatbots and automation systems that answer your customers,
+          handle repetitive work and connect the tools you already use.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact" data-i18n="cta.contact">Contact us</a>
+          <a class="btn btn-ghost" href="#services" data-i18n="cta.services">See our services</a>
+        </div>
+        <ul class="hero-badges">
+          <li data-i18n="hero.badge1">Custom AI agents</li>
+          <li data-i18n="hero.badge2">WhatsApp Business API</li>
+          <li data-i18n="hero.badge3">Process automation</li>
+          <li data-i18n="hero.badge4">B2B only</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="section" id="services">
+      <div class="container">
+        <p class="section-label" data-i18n="services.label">Services</p>
+        <h2 class="section-title" data-i18n="services.title">What we build for our clients</h2>
+        <p class="section-intro" data-i18n="services.intro">
+          We deliver software projects on a fixed-scope or monthly basis. Every engagement starts with a paid discovery
+          call and ends with a system your team owns and runs.
         </p>
 
-        <a href="gallery.html">Click Here to see my pictures</a>
-    </div>
-    <div>
-        <h1>MR. LASLIE </h1>
-        <p>See My pictures <a href="gallery.html">here</a></p>
-        <h3>A Brief History of me</h3>
-        <p>My name is <em>LASLIE</em>, I was born in Cameroon. I am trying to be a programmer, hope that works out for me</p>
-        <h3>Education so far</h3>
-        <p>
-            <ul>
-                <li><strong>GHS LImbe</strong></li>
-                <li>Kulu Limbe</li>
+        <div class="cards">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="4" y="7" width="16" height="12" rx="3" />
+                <path d="M12 7V4M9 13h.01M15 13h.01M9.5 16.5c1.5 1 3.5 1 5 0" />
+              </svg>
+            </div>
+            <h3 data-i18n="svc1.title">Custom AI agents</h3>
+            <p data-i18n="svc1.body">
+              Autonomous assistants trained on your data, your tone and your rules. They qualify leads, draft replies,
+              summarise documents and take actions in your tools — with a human in the loop where it matters.
+            </p>
+            <ul class="card-list">
+              <li data-i18n="svc1.li1">Knowledge base &amp; document Q&amp;A</li>
+              <li data-i18n="svc1.li2">Tool &amp; API access for real actions</li>
+              <li data-i18n="svc1.li3">Guardrails, logging and handover to humans</li>
             </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M20 12a8 8 0 1 0-3.2 6.4L20 20l-1.2-3.4A7.9 7.9 0 0 0 20 12Z" />
+                <path d="M8.5 11h7M8.5 14.5h4" />
+              </svg>
+            </div>
+            <h3 data-i18n="svc2.title">Intelligent chatbots</h3>
+            <p data-i18n="svc2.body">
+              Customer-facing assistants for your website, support inbox or messaging channels. They answer in your
+              customers' language, 24/7, and escalate cleanly to your team when a human is needed.
+            </p>
+            <ul class="card-list">
+              <li data-i18n="svc2.li1">Website widget &amp; multi-channel support</li>
+              <li data-i18n="svc2.li2">Multilingual answers from your own content</li>
+              <li data-i18n="svc2.li3">CRM and helpdesk integration</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.4-1.3A9 9 0 1 0 12 3Z" />
+                <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.6-2-1-1 1a4.6 4.6 0 0 1-1.9-1.9l1-1-1-2-1.6 1Z" />
+              </svg>
+            </div>
+            <h3 data-i18n="svc3.title">WhatsApp Business API automation</h3>
+            <p data-i18n="svc3.body">
+              Official WhatsApp Business Platform integrations: automated conversations, order updates, appointment
+              reminders, notifications and payment follow-ups — on the channel your customers already use.
+            </p>
+            <ul class="card-list">
+              <li data-i18n="svc3.li1">Cloud API setup &amp; message templates</li>
+              <li data-i18n="svc3.li2">Automated flows with AI replies</li>
+              <li data-i18n="svc3.li3">Shared team inbox &amp; analytics</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M5 6h5M14 6h5M5 12h9M18 12h1M5 18h4M13 18h6" />
+                <circle cx="12" cy="6" r="2" />
+                <circle cx="16" cy="12" r="2" />
+                <circle cx="11" cy="18" r="2" />
+              </svg>
+            </div>
+            <h3 data-i18n="svc4.title">Business process automation</h3>
+            <p data-i18n="svc4.body">
+              We remove the manual steps between your systems: data entry, quotes, invoicing, reporting, onboarding.
+              Custom integrations between your CRM, spreadsheets, email, payments and internal tools.
+            </p>
+            <ul class="card-list">
+              <li data-i18n="svc4.li1">Workflow design &amp; automation build</li>
+              <li data-i18n="svc4.li2">API integrations and data pipelines</li>
+              <li data-i18n="svc4.li3">Monitoring, maintenance &amp; support</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROCESS ================= -->
+    <section class="section section-alt" id="process">
+      <div class="container">
+        <p class="section-label" data-i18n="process.label">How we work</p>
+        <h2 class="section-title" data-i18n="process.title">From first call to running system</h2>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">01</span>
+            <h3 data-i18n="step1.title">Discovery</h3>
+            <p data-i18n="step1.body">We map the process you want to automate, the tools involved and the outcome you
+              expect. You get a written scope, a fixed price and a timeline.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">02</span>
+            <h3 data-i18n="step2.title">Build</h3>
+            <p data-i18n="step2.body">We develop and test the solution in short cycles, with a working demo you can try
+              at each milestone. No black boxes.</p>
+          </li>
+          <li class="step">
+            <span class="step-num">03</span>
+            <h3 data-i18n="step3.title">Launch &amp; support</h3>
+            <p data-i18n="step3.body">We deploy, train your team and monitor the system. Ongoing support and
+              improvements are available on a monthly plan.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div>
+          <p class="section-label" data-i18n="about.label">About</p>
+          <h2 class="section-title" data-i18n="about.title">A UK technology company focused on applied AI</h2>
+          <p class="lede" data-i18n="about.p1">
+            BONZINILABS LTD is a software company registered in England &amp; Wales, based in London. We design and
+            develop AI-powered tools and automation solutions for other businesses.
+          </p>
+          <p data-i18n="about.p2">
+            Our clients are small and mid-sized companies that want to serve customers faster without growing headcount:
+            agencies, e-commerce brands, service providers and local operators. We work remotely with clients across
+            Europe and Africa, and we deliver in English and French.
+          </p>
+          <p data-i18n="about.p3">
+            We are deliberately practical. We do not sell strategy decks — we ship working software, integrated with the
+            systems you already run, and we stay responsible for it after launch.
+          </p>
+        </div>
+        <aside class="fact-card">
+          <h3 data-i18n="about.facts">Company details</h3>
+          <dl>
+            <div>
+              <dt data-i18n="about.legal">Legal name</dt>
+              <dd>BONZINILABS LTD</dd>
+            </div>
+            <div>
+              <dt data-i18n="about.reg">Registration</dt>
+              <dd data-i18n="about.regval">Registered in England &amp; Wales</dd>
+            </div>
+            <div>
+              <dt data-i18n="about.office">Registered office</dt>
+              <dd>71-75 Shelton Street, Covent Garden<br>London, WC2H 9JQ<br>United Kingdom</dd>
+            </div>
+            <div>
+              <dt data-i18n="about.model">Business model</dt>
+              <dd data-i18n="about.modelval">B2B software development and automation services, billed per project or per
+                month</dd>
+            </div>
+            <div>
+              <dt data-i18n="about.email">Email</dt>
+              <dd><a href="mailto:contact@bonzinilabs.com">contact@bonzinilabs.com</a></dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="section section-alt" id="contact">
+      <div class="container">
+        <p class="section-label" data-i18n="contact.label">Contact</p>
+        <h2 class="section-title" data-i18n="contact.title">Tell us what you want to automate</h2>
+        <p class="section-intro" data-i18n="contact.intro">
+          Send us a short description of your project and we will reply within two business days.
         </p>
 
-        <a href="gallery.html">Click Here to see my pictures</a>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="info-block">
+              <h3 data-i18n="contact.emailTitle">Email</h3>
+              <p><a class="big-link" href="mailto:contact@bonzinilabs.com">contact@bonzinilabs.com</a></p>
+            </div>
+            <div class="info-block">
+              <h3 data-i18n="contact.addrTitle">Registered office</h3>
+              <address>
+                BONZINILABS LTD<br>
+                71-75 Shelton Street, Covent Garden<br>
+                London, WC2H 9JQ<br>
+                United Kingdom
+              </address>
+            </div>
+            <div class="info-block">
+              <h3 data-i18n="contact.hoursTitle">Business hours</h3>
+              <p data-i18n="contact.hours">Monday to Friday, 9:00 – 18:00 (UK time)</p>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="field">
+              <label for="name" data-i18n="form.name">Your name</label>
+              <input type="text" id="name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="email" data-i18n="form.email">Email address</label>
+              <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="company" data-i18n="form.company">Company (optional)</label>
+              <input type="text" id="company" name="company" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="message" data-i18n="form.message">How can we help?</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit" data-i18n="form.submit">Send message</button>
+            <p class="form-note" data-i18n="form.note">
+              This form opens your email application with the message pre-filled. You can also write directly to
+              contact@bonzinilabs.com.
+            </p>
+            <p class="form-error" id="formError" role="alert" hidden data-i18n="form.error">Please fill in your name, a
+              valid email address and a message.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <p class="footer-name">BONZINILABS LTD</p>
+          <p class="footer-tag" data-i18n="footer.tag">AI automation for business</p>
+        </div>
+      </div>
+      <address class="footer-address">
+        71-75 Shelton Street, Covent Garden<br>
+        London, WC2H 9JQ, United Kingdom<br>
+        <a href="mailto:contact@bonzinilabs.com">contact@bonzinilabs.com</a>
+      </address>
+      <div class="footer-legal">
+        <p>&copy; <span id="year">2026</span> BONZINILABS LTD</p>
+        <p data-i18n="footer.reg">Registered in England &amp; Wales</p>
+        <p><a href="#top" data-i18n="footer.top">Back to top</a></p>
+      </div>
     </div>
-    <div >
-        <h1>MR. LASLIE </h1>
-        <p>See My pictures <a href="gallery.html">here</a></p>
-        <h3>A Brief History of me</h3>
-        <p>My name is <em>LASLIE</em>, I was born in Cameroon. I am trying to be a programmer, hope that works out for me</p>
-        <h3>Education so far</h3>
-        <p>
-            <ul>
-                <li><strong>GHS LImbe</strong></li>
-                <li>Kulu Limbe</li>
-            </ul>
-        </p>
+  </footer>
 
-        <a href="gallery.html">Click Here to see my pictures</a>
-    </div>
-    <div>
-        <h1>MR. LASLIE </h1>
-        <p>See My pictures <a href="gallery.html">here</a></p>
-        <h3>A Brief History of me</h3>
-        <p>My name is <em>LASLIE</em>, I was born in Cameroon. I am trying to be a programmer, hope that works out for me</p>
-        <h3>Education so far</h3>
-        <p>
-            <ul>
-                <li><strong>GHS LImbe</strong></li>
-                <li>Kulu Limbe</li>
-            </ul>
-        </p>
-
-        <a href="#first_section">Take me to top</a>
-    </div>
-
-
-
-
-
-
+  <script src="assets/js/main.js"></script>
+</body>
 
 </html>
