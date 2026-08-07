@@ -1,193 +1,226 @@
-# Mettre le site BONZINILABS LTD en ligne
+# Mettre le site BONZINILABS LTD en ligne sur Vercel
 
-Objectif : obtenir une **adresse web publique et gratuite**, qui s'ouvre **sans mot de passe et
-sans connexion**, à coller dans le champ « Business website » de Stripe.
+Objectif : obtenir une **adresse web publique**, qui s'ouvre **sans mot de passe et sans
+connexion**, à coller dans le champ « Business website » de Stripe.
 
-Le site est statique : `index.html` + trois pages légales + un dossier `assets/`. Il n'y a rien à
-compiler, aucune base de données, aucun serveur.
+Le site est statique : `index.html`, trois pages légales, une page 404 et un dossier `assets/`.
+Rien à compiler, aucune base de données, aucun serveur. Le fichier `vercel.json` du dépôt règle
+déjà tout : preset « Other », aucune commande de build, racine du dépôt servie telle quelle,
+en-têtes de sécurité et de cache. **Vous n'aurez aucun réglage de build à saisir.**
 
----
-
-## 0. Quelle plateforme choisir — lisez ceci d'abord
-
-| | Netlify (gratuit) | Vercel (Hobby, gratuit) |
-|---|---|---|
-| Usage commercial | **Autorisé** (seule la revente d'hébergement est interdite) | **Interdit** : « Hobby teams are restricted to non-commercial personal use only » |
-| Convient au site d'une société qui vend des services | oui | non — il faut le plan Pro (20 $/mois) |
-| Bande passante | 100 Go/mois | ~100 Go/mois |
-
-**Recommandation : Netlify.** Le site de BONZINILABS LTD fait la promotion de prestations
-vendues et sert à activer un compte Stripe : c'est un usage commercial au sens des conditions
-de Vercel. Si vous préférez Vercel, prenez le plan Pro.
-
-En cas d'urgence absolue vous pouvez publier sur Vercel Hobby aujourd'hui pour débloquer
-Stripe, puis migrer vers Netlify dans les jours qui suivent.
+> **Une note factuelle, une seule fois.** Les conditions de Vercel disent :
+> *« Hobby teams are restricted to non-commercial personal use only. All commercial usage of the
+> platform requires either a Pro or Enterprise plan »*, et la liste des usages commerciaux inclut
+> explicitement « **advertising the sale of a product or service** ». Ce site fait la promotion de
+> prestations vendues. Le plan **Pro** est à 20 $ par utilisateur et par mois. C'est votre
+> décision ; la section 8 garde Netlify en solution de repli si vous changez d'avis.
 
 ---
 
-## 1. Netlify — la voie la plus rapide (glisser-déposer, 5 minutes)
+## 1. À FAIRE EN PREMIER : la branche `master`
 
-1. Ouvrez `https://github.com/omegathesecond/level1-portfolio/tree/claude/bonzinilabs-website-w4s21z`.
-2. Bouton vert **Code** → **Download ZIP**.
-3. Décompressez le ZIP. Ouvrez le dossier obtenu : vous devez voir `index.html` **directement
-   dedans** (pas dans un sous-dossier).
-4. Ouvrez `https://app.netlify.com/drop` et connectez-vous (GitHub ou e-mail).
-5. Faites glisser **le dossier** (pas le fichier ZIP) dans la zone en pointillés.
-6. Netlify affiche une adresse en `.netlify.app` au bout de quelques secondes.
-7. **Rendez le site public** — voir §3. C'est obligatoire depuis 2026.
-8. Renommez le projet — voir §4 — puis testez — voir §5.
+C'est le piège le plus coûteux de tout ce guide.
 
-## 2. Netlify depuis GitHub (mises à jour automatiques ensuite)
+Quand Vercel importe un dépôt, il choisit la branche de production dans cet ordre : `main`,
+sinon **`master`**, sinon la branche par défaut. Votre dépôt **a une branche `master`**, et
+`master` contient encore l'ancien site d'exercice (`about.html`, `gallery.html`, la page
+« MR. LASLIE »). Le nouveau site vit sur `claude/bonzinilabs-website-w4s21z`.
 
-1. `https://app.netlify.com` → **Sign up** → **GitHub** → **Authorize Netlify**.
-2. **Add new project** → **Import an existing project** → **GitHub**.
-3. Choisissez le dépôt `level1-portfolio`. Si vous ne le voyez pas :
-   **Configure the Netlify app on GitHub**, cochez le dépôt, enregistrez.
-4. **Branch to deploy** : `claude/bonzinilabs-website-w4s21z`.
-5. **Build command** : laissez vide. **Publish directory** : `.`
-   (le fichier `netlify.toml` du dépôt règle déjà tout cela.)
-6. **Deploy**.
-7. Rendez le site public (§3), renommez-le (§4), testez (§5).
+Si vous importez sans rien faire : **votre URL de production affichera le portfolio étudiant**,
+et c'est ce que Stripe verra.
 
-Pour changer de branche plus tard :
-**Project configuration → Build & deploy → Continuous Deployment → Branches and deploy
-contexts → Configure**.
+Deux façons de régler ça. Choisissez-en une.
+
+### Option A — fusionner dans `master` (recommandée)
+
+Elle règle trois choses d'un coup : `master` devient le vrai site, Vercel le prend
+automatiquement en production, et vos futures modifications partent directement en production.
+
+1. Ouvrez `https://github.com/omegathesecond/level1-portfolio`.
+2. Onglet **Pull requests** → bouton **New pull request**.
+3. À gauche (**base**) choisissez `master`. À droite (**compare**) choisissez
+   `claude/bonzinilabs-website-w4s21z`.
+4. Cliquez **Create pull request**, puis à nouveau **Create pull request**.
+5. Cliquez **Merge pull request**, puis **Confirm merge**.
+6. Vérifiez sur `https://github.com/omegathesecond/level1-portfolio` que la page d'accueil du
+   dépôt montre bien `terms.html`, `privacy.html`, `refunds.html` : la fusion est faite.
+
+### Option B — dire à Vercel d'utiliser l'autre branche
+
+À faire **après** l'import (section 2), avant de donner l'URL à Stripe.
+
+1. Dans le projet Vercel, cliquez **Settings**.
+2. Menu de gauche : **Environments**.
+3. Cliquez sur l'environnement **Production**.
+4. Section **Branch Tracking** : remplacez le nom de la branche par
+   `claude/bonzinilabs-website-w4s21z`.
+5. Cliquez **Save**.
+6. Onglet **Deployments** → bouton **Create Deployment** → saisissez le nom complet de la
+   branche → **Create Deployment**.
+
+Avec l'option B, `master` garde l'ancien site : ce n'est pas grave pour Stripe, mais gardez en
+tête que ce n'est plus la branche qui compte.
 
 ---
 
-## 3. LE PIÈGE DU MOT DE PASSE — la partie la plus importante
+## 2. Importer le dépôt dans Vercel
 
-Si l'adresse que vous donnez à Stripe affiche un écran de connexion, **votre dossier est
-bloqué**. Stripe l'écrit noir sur blanc : *« The webpage must be accessible without a
-password. »*
+1. Ouvrez `https://vercel.com` → **Sign Up** (ou **Log In**).
+2. Cliquez **Continue with GitHub** et connectez-vous avec le compte `omegathesecond`.
+3. Cliquez **Authorize Vercel**.
+4. Sur le tableau de bord, cliquez **Add New…** → **Project**.
+5. Trouvez `level1-portfolio` et cliquez **Import**.
+   *Si le dépôt n'apparaît pas :* **Adjust GitHub App Permissions**, cochez le dépôt,
+   enregistrez, revenez en arrière.
+6. Dans **Project Name**, effacez ce qui est proposé et tapez : `bonzinilabs`.
+7. **Framework Preset**, **Build Command**, **Output Directory**, **Install Command** :
+   **n'y touchez pas**. `vercel.json` les impose déjà. Si l'interface affiche une valeur, laissez
+   la case *Override* décochée.
+8. **Root Directory** : laissez `./`.
+9. **Environment Variables** : aucune.
+10. Cliquez **Deploy** et attendez environ une minute.
 
-### 3.1 Netlify
+Le dépôt est public et appartient à un compte personnel : aucune restriction de déploiement ne
+s'applique.
 
-Piège 2026 : les équipes créées **à partir du 28 juillet 2026** ont pour réglage par défaut
-**« Private for new projects »** — un site neuf démarre donc derrière une connexion d'équipe.
+---
 
-1. Ouvrez le projet dans `https://app.netlify.com`.
-2. **Project configuration** → **General**.
-3. Descendez à **Visitor access** → **Project visibility**.
-4. Choisissez **Public** (ou cliquez **Make public**), puis enregistrez.
-5. Sur certains plans, le réglage est dans **Project configuration → Access & security →
-   Visitor access → Password Protection** : il doit être sur **No protection**.
-6. Vérifiez qu'aucun fichier `_headers` n'a été ajouté avec une ligne `Basic-Auth`.
+## 3. Production ou preview — la distinction qui décide de tout
 
-### 3.2 Vercel
+Sur le plan Hobby, Vercel propose **Vercel Authentication** avec la portée **Standard
+Protection**, qui protège tous les déploiements **sauf les domaines de production**. Autrement
+dit : **une adresse preview affiche un écran de connexion, la production reste publique.**
+Protéger aussi la production (« All Deployments ») n'existe que sur Pro et Enterprise.
 
-Vercel active **Vercel Authentication** en portée **Standard Protection** : cela protège
-**tous les déploiements sauf la production**. Autrement dit, une adresse *preview* demande une
-connexion — et Stripe est bloqué.
+Conclusion pratique : **ne donnez jamais une adresse preview à Stripe.**
 
-- **Adresse de production** : nom court et propre, `bonzinilabs.vercel.app`.
-- **Adresse preview** : contient un identifiant aléatoire ou le nom de la branche
-  (`bonzinilabs-git-claude-…vercel.app`). **Ne la donnez jamais à Stripe.**
-- Dans l'onglet **Deployments**, la bonne ligne porte l'étiquette **Production**.
-- Réglage : projet → **Settings** → **Deployment Protection**. Mettez **Vercel
-  Authentication** sur **Disabled** et **Save**. Vérifiez qu'aucune **Password Protection**
-  n'est active.
-- Le site vit sur `claude/bonzinilabs-website-w4s21z`, qui n'est pas la branche par défaut.
-  Réglez **Settings → Environments → Production → Branch Tracking** sur cette branche, ou
-  fusionnez la branche dans `master`. Sans cela, vos futures modifications ne partiront qu'en
-  preview protégée.
+- **Adresse de production** — nom court et propre : `bonzinilabs.vercel.app`. C'est celle
+  affichée dans le cadre **Domains** de la page du projet.
+- **Adresse preview** — contient un identifiant aléatoire ou le nom de la branche :
+  `bonzinilabs-git-claude-bonzinilabs-xxxx.vercel.app`. Dans l'onglet **Deployments**, la ligne
+  porte l'étiquette **Preview** et non **Production**.
+
+Vérifiez quand même le réglage : projet → **Settings** → **Deployment Protection**. La portée
+doit être **Standard Protection** ou **None**, jamais **All Deployments**. Une équipe peut avoir
+un réglage par défaut appliqué aux nouveaux projets — c'est le cas à contrôler.
 
 ---
 
 ## 4. Une adresse propre
 
-**Netlify** : **Project configuration** → **General** → **Project details** →
-**Change project name** → `bonzinilabs` (sinon `bonzinilabs-ltd`).
-L'ancienne adresse cesse aussitôt de fonctionner et redevient disponible pour quelqu'un
-d'autre : **renommez avant** de coller l'adresse dans Stripe.
+Si vous n'avez pas nommé le projet `bonzinilabs` à l'étape 2.6 : **Settings** → **General** →
+champ **Project Name** → `bonzinilabs` → **Save**.
 
-**Vercel** : **Settings** → **General** → **Project Name** → `bonzinilabs` → **Save**.
-Vercel ne garantit pas que l'ancienne adresse reste accessible : même règle.
+Faites-le **avant** de coller l'adresse dans Stripe : Vercel ne garantit pas que l'ancienne
+adresse reste accessible après un renommage.
 
 ---
 
 ## 5. Vérification obligatoire avant de coller l'adresse dans Stripe
 
-1. **Fenêtre de navigation privée** (`Ctrl+Maj+N`) : collez l'adresse. Le site doit s'afficher
-   immédiatement, sans écran de connexion ni mot de passe.
+Stripe l'écrit noir sur blanc : *« The webpage must be accessible without a password. »*
+
+1. **Fenêtre de navigation privée** (`Ctrl+Maj+N`) : collez l'adresse de production. Le site doit
+   s'afficher immédiatement, sans écran de connexion.
 2. **Téléphone, Wi-Fi coupé** (données mobiles) : la même adresse doit s'ouvrir. Ce test prouve
    qu'aucun cookie de votre ordinateur ne masque une protection.
 3. L'onglet du navigateur doit afficher
    **« BONZINILABS LTD — AI Automation & AI Agents for Business »**.
-4. `Ctrl+F` sur la page et vérifiez la présence de : `BONZINILABS LTD`, `71-75 Shelton Street`,
-   `England & Wales`, `contact@bonzinilabs.com`, `GBP`.
-5. Ouvrez chacune des trois pages légales en tapant l'adresse à la main :
-   `/terms.html`, `/refunds.html`, `/privacy.html`. Aucune erreur 404.
-6. `F12` → onglet **Network** → `Ctrl+R` : aucune ligne rouge, aucun 404.
+4. `Ctrl+F` sur la page : vérifiez `BONZINILABS LTD`, `71-75 Shelton Street`, `England & Wales`,
+   `contact@bonzinilabs.com`, `GBP`.
+5. Tapez à la main dans la barre d'adresse : `/terms.html`, `/refunds.html`, `/privacy.html`.
+   Aucune erreur 404. Tapez aussi `/nimportequoi` : vous devez voir la page 404 du site, pas
+   celle de Vercel.
+6. `F12` → onglet **Network** → `Ctrl+R` : aucune ligne rouge.
 7. Envoyez un e-mail de test à `contact@bonzinilabs.com` depuis une autre adresse et
-   **vérifiez qu'il arrive**. Une adresse qui rebondit est une cause invisible de refus.
-8. Confirmez que l'adresse est bien celle de **production** (§3.2), puis collez-la dans Stripe
-   avec `https://`.
+   **vérifiez qu'il arrive**. Une adresse qui rebondit est une cause de refus invisible.
+8. Confirmez que l'adresse est bien celle de **production** (section 3), puis collez-la dans
+   Stripe avec `https://`.
 9. **Ne remettez aucune protection après l'activation.** Stripe exige que le site reste
    accessible en permanence et le revérifie régulièrement.
 
 ---
 
-## 6. Brancher le domaine `bonzinilabs.com` (plus tard)
+## 6. Brancher le domaine `bonzinilabs.com`
 
-**Netlify** : **Domain management** → **Add a domain** → `bonzinilabs.com` → « DNS externe ».
-Valeurs documentées : domaine nu → ALIAS/ANAME vers `apex-loadbalancer.netlify.com`, ou à
-défaut un enregistrement **A** vers `75.2.60.5` ; `www` → **CNAME** vers
-`bonzinilabs.netlify.app`.
+1. Projet → **Settings** → **Domains** → **Add Domain**.
+2. Tapez `bonzinilabs.com` et validez (acceptez l'ajout de `www`).
+3. Vercel affiche alors les valeurs DNS exactes. **Ce sont ces valeurs-là qui font foi** : elles
+   dépendent du projet et changent avec le temps. Recopiez-les telles quelles.
+   Valeurs habituellement documentées : enregistrement **A** vers `216.198.79.1` pour le domaine
+   nu (`76.76.21.21` sur les anciens projets), et **CNAME** pour `www` vers une cible propre au
+   projet du type `xxxxxxxx.vercel-dns-017.com`.
 
-**Vercel** : **Settings** → **Domains** → **Add Domain**. Valeurs habituelles : **A**
-`216.198.79.1` pour le domaine nu, **CNAME** propre au projet pour `www`.
+**Chez IONOS**, où le domaine est enregistré :
 
-Dans les deux cas, **recopiez ce qu'affiche l'écran au moment où vous le faites** : ces valeurs
-changent et celles de votre tableau de bord font foi.
+1. Connectez-vous à `https://my.ionos.fr`.
+2. **Domaines & SSL** → cliquez sur `bonzinilabs.com` → onglet **DNS**.
+3. **AJOUTER UN ENREGISTREMENT** : type **A**, *Hostname* `@` (ou vide), *Points to* = l'IP
+   fournie par Vercel. Enregistrez.
+4. Encore : type **CNAME**, *Hostname* `www`, *Points to* = la cible fournie par Vercel.
+5. **Supprimez les anciens enregistrements A/CNAME** qui pointaient ailleurs, sinon conflit.
+6. Comptez de 15 minutes à quelques heures, puis attendez le cadenas HTTPS (certificat
+   automatique).
+7. Une fois le domaine actif, remplacez l'adresse `.vercel.app` par `https://bonzinilabs.com`
+   dans Stripe.
 
-**Chez IONOS** : `my.ionos.fr` → **Domaines & SSL** → `bonzinilabs.com` → onglet **DNS** →
-**AJOUTER UN ENREGISTREMENT**. Créez l'enregistrement A (hostname `@` ou vide) et le CNAME
-`www`. Supprimez les anciens enregistrements A/CNAME qui pointaient ailleurs, sinon conflit.
-Comptez de 15 minutes à quelques heures, puis attendez le cadenas HTTPS.
-
-Pensez aussi à créer les enregistrements **MX** pour recevoir le courrier sur
-`contact@bonzinilabs.com` : un domaine d'entreprise incapable de recevoir un e-mail est un
-signal négatif pour un examinateur.
+Pensez aussi aux enregistrements **MX** pour recevoir le courrier sur `contact@bonzinilabs.com` :
+un domaine d'entreprise incapable de recevoir un e-mail est un signal négatif pour un
+examinateur.
 
 ---
 
-## 7. Solution de repli : hébergement classique IONOS
+## 7. Modifier le site plus tard
 
-1. `my.ionos.fr` → **Hébergement** → **FTP/SFTP**. Notez le serveur et l'identifiant, créez le
-   mot de passe.
+- Chaque `git push` sur la branche de production redéclenche un déploiement en 30 à 60 secondes.
+  Vous pouvez aussi éditer un fichier directement sur GitHub (crayon **Edit** → **Commit
+  changes**).
+- Forcer un redéploiement : onglet **Deployments** → menu **⋯** sur la ligne la plus récente →
+  **Redeploy** → confirmer.
+- Les fichiers `README.md`, `DEPLOY.md`, `tools/` et `netlify.toml` sont listés dans
+  `.vercelignore` : ils restent dans le dépôt mais ne sont jamais publiés sur le domaine.
+
+---
+
+## 8. Solutions de repli
+
+### Netlify (gratuit, usage commercial autorisé)
+
+Le plan gratuit de Netlify autorise les sites commerciaux ; seule la revente d'hébergement est
+interdite. Le dépôt contient déjà `netlify.toml`.
+
+1. `app.netlify.com` → **Add new project** → **Import an existing project** → **GitHub**.
+2. Choisissez `level1-portfolio`, **Branch to deploy** : `master` (après l'option A) ou
+   `claude/bonzinilabs-website-w4s21z`.
+3. **Build command** vide, **Publish directory** `.` — `netlify.toml` s'en charge.
+4. **Rendez le site public** : **Project configuration** → **General** → **Visitor access** →
+   **Project visibility** → **Public**. Depuis le 28 juillet 2026, les nouvelles équipes
+   démarrent en « Private » et le site est alors derrière une connexion.
+
+### Hébergement classique IONOS
+
+1. `my.ionos.fr` → **Hébergement** → **FTP/SFTP**, créez le mot de passe.
 2. Connectez-vous avec **FileZilla** en **SFTP** (port 22).
-3. La racine web est `/`, dont le chemin absolu ressemble à
-   `/kunden/homepages/…/htdocs/` (contrats antérieurs au 21/07/2026) ou `/home/www/` (après).
-4. Déposez **tout le contenu du dépôt** : `index.html`, `terms.html`, `privacy.html`,
-   `refunds.html`, `favicon.ico`, `robots.txt`, `sitemap.xml` et le dossier `assets/`.
+3. La racine web est `/` (chemin absolu du type `/kunden/homepages/…/htdocs/`, ou `/home/www/`
+   pour les contrats à partir du 21/07/2026).
+4. Déposez `index.html`, `terms.html`, `privacy.html`, `refunds.html`, `404.html`, `favicon.ico`,
+   `robots.txt`, `sitemap.xml` et le dossier `assets/`. Ne déposez pas `tools/`, `README.md` ni
+   `DEPLOY.md`.
 5. `index.html` doit être **à la racine liée au domaine**, jamais dans un sous-dossier.
 6. Supprimez toute page « en construction » d'IONOS qui prendrait le dessus.
 
 ---
 
-## 8. Modifier le site plus tard
-
-- Chaque `git push` sur la branche de production redéclenche un déploiement en 30 à 60
-  secondes. Vous pouvez aussi éditer un fichier directement sur GitHub (crayon **Edit** →
-  **Commit changes**).
-- Forcer un redéploiement — **Netlify** : onglet **Deploys** → **Trigger deploy**.
-  **Vercel** : onglet **Deployments** → menu **⋯** → **Redeploy**.
-- Site déposé en glisser-déposer : refaites glisser le dossier mis à jour en bas de la page
-  **Deploys**.
-
----
-
 ## 9. À compléter dès que vous avez l'information
 
-Ces éléments ne sont pas inventés dans le code — il faut les ajouter vous-même :
+Rien de tout cela n'est inventé dans le code — un numéro fictif serait pire qu'une absence.
 
 | Élément | Où | Pourquoi |
 |---|---|---|
-| Numéro d'immatriculation (company number) | `index.html`, section « Company details » (un commentaire indique l'emplacement exact) et pied de page des pages légales | Obligatoire sur le site d'une société britannique (Companies Act 2006) et fort signal de confiance pour Stripe |
-| Numéro de téléphone | section Contact | Stripe demande « something besides contact forms » ; e-mail + téléphone est plus solide qu'e-mail seul |
-| Numéro de TVA | pied de page | uniquement si la société est assujettie |
-| Boîte `contact@bonzinilabs.com` opérationnelle | chez votre hébergeur mail | une adresse qui rebondit fait échouer la vérification sans explication |
+| Numéro d'immatriculation (company number) | `index.html`, bloc « Company details » (un commentaire marque l'endroit exact) et pied de page des quatre pages | Obligatoire sur le site d'une société britannique (Companies Act 2006), et c'est le champ qui permet à Stripe de rapprocher le site de l'entité déclarée |
+| Numéro de téléphone | section Contact | Stripe demande « something besides contact forms » et cite le téléphone |
+| Numéro de TVA | pied de page | Uniquement si la société est assujettie |
+| Boîte `contact@bonzinilabs.com` opérationnelle | chez votre hébergeur mail | Une adresse qui rebondit fait échouer la vérification sans explication |
 
 Pour changer l'adresse e-mail partout d'un coup :
 

@@ -35,8 +35,10 @@ navigateur suffit ; pour un aperçu propre : `npx http-server -p 8123 .`
 
 ## Choix techniques
 
-- **HTML/CSS/JS natifs.** Le site se déploie tel quel sur Netlify, Vercel, IONOS ou n'importe
-  quel hébergement de fichiers.
+- **HTML/CSS/JS natifs.** Le site se déploie tel quel sur Vercel (cible retenue), Netlify,
+  IONOS ou n'importe quel hébergement de fichiers. `vercel.json` fixe déjà preset « Other »,
+  absence de build, racine servie telle quelle, en-têtes de sécurité et de cache — il n'y a
+  aucun réglage à saisir à l'import. Il est validé contre le schéma publié par Vercel.
 - **Aucune requête tierce.** La police Inter est auto-hébergée (48 Ko, préchargée) avec une
   police de repli aux métriques ajustées, donc pas de décalage au chargement. Pas de CDN, pas
   d'analytics, pas de cookies.
@@ -91,8 +93,9 @@ et de la [checklist de la documentation](https://docs.stripe.com/get-started/che
 - politiques de remboursement, d'annulation, de livraison et de confidentialité, plus les
   conditions générales, liées depuis la page d'accueil ;
 - `robots.txt` ouvert, aucune balise `noindex`, données structurées `Organization` ;
-- en-têtes HSTS et CSP, et les fichiers de développement (`README`, `DEPLOY`, `tools/`) ne
-  sont pas servis sur le domaine public.
+- en-têtes HSTS et CSP, et les fichiers de développement (`README`, `DEPLOY`, `tools/`,
+  `netlify.toml`) ne sont pas publiés sur le domaine — `.vercelignore` côté Vercel, règles 404
+  côté Netlify.
 
 **À compléter par le dirigeant** (jamais inventé dans le code) : le numéro d'immatriculation
 de la société, un numéro de téléphone, le numéro de TVA le cas échéant, et une boîte mail
