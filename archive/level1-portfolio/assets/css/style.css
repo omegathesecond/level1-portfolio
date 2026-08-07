@@ -1,0 +1,32 @@
+#title{
+    color: lightblue;
+}
+
+#first_section{
+    background-color: indianred;
+    
+
+}
+
+#second_section{
+    background-color: lightblue;
+    height: 30%;
+}
+
+#third_section{
+    background-color: orange;
+    height: 30%;
+}
+
+.body-text{
+    color: red;
+}
+
+p{
+    font-size: large;
+    color: white;
+}
+
+.white-text{
+    color: white;
+}
