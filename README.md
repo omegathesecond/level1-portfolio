@@ -26,6 +26,7 @@ assets/fonts/         Inter Variable, sous-ensemble latin, auto-hébergé (48 Ko
 assets/img/           marque, favicon, image de partage
 tools/build-images.mjs génère og-image.png, apple-touch-icon.png et favicon.ico
 robots.txt sitemap.xml netlify.toml vercel.json .vercelignore favicon.ico
+archive/              ancien site d'exercice du dépôt, conservé mais jamais publié
 ```
 
 Aucune dépendance, aucun build, aucune requête vers un tiers. Ouvrir `index.html` dans un
